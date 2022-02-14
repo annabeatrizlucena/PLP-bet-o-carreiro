@@ -1,5 +1,7 @@
 import Control.Concurrent
-import System.Random (Random(randomRIO))
+import System.IO.Unsafe ( unsafePerformIO )                                         
+import System.Random ( Random(randomR), getStdRandom )
+
 
 
 verificaSequencia :: String -> String -> String 
@@ -19,12 +21,14 @@ mostraElemento string =  do
 
 getSequenciaDaVez :: String 
 getSequenciaDaVez = do
-    let numeroAleatorio = randomRIO (1,10 :: Int)
+    let numeroAleatorio = getNumeroAleatorio
     let listaFacil = ["aaswd","aaswd","wdsaw","swdaa","dwsdd","wswaa","dsaws","sswda","sdaws","ddasw","awsdw","sadws","dawsw","sawds","awdsa","wasda"]
     let listaMedio = ["wdsaawdswasdwad","awdswsdawasdaws","wsadwsdwsdwsdaw","awsdwsdawdsawsa","awaaawsdswwdads","dsadwswswadswsa","swdsadwswswsads","dswaswddswsawsd","wsaswswsdwawsws","awswwwdddsssawd","dawdwsdwswdwsda","wsdawswsswswdwd","awaawwdwdwadaas","ssadwswasswsswa","asdwswaswsasass"]
     let listaDificil = ["asswswsdsadssdawssaw","sdwasdwsaswsdwdsadsw","wswsswddsawsdswsaswd","daswswsdsawaswdwswwa","sdaswsawsdwdswswsdwd","swddswssawddswdswdsa","dwsawsawdswsddadawws","sasdaswsswsadwwsdsad","daddwsaswsawdwsadsad","sawdswswsdsawdsswssw","wasdwsswdswssaswdswa","wswsdwswswssasasassa","asddsaswasswsswsddwd","dsdsswasdswdswsdwdsw","sawsdwsasddswdswsaws"]
-    listaFacil!!5
+    listaFacil!!numeroAleatorio
 
+getNumeroAleatorio :: Int
+getNumeroAleatorio = unsafePerformIO (getStdRandom (randomR (0, 14)))
 
 main :: IO ()
 main = do
@@ -33,3 +37,4 @@ main = do
     input2 <- getLine
     let sequenciaUsuario = input2
     print (verificaSequencia sequenciaDaVez sequenciaUsuario)
+    

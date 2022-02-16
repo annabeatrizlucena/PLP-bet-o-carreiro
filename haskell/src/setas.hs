@@ -47,14 +47,17 @@ getInput seq = do
     let sequenciaUsuario = input2
     print (verificaSequencia seq sequenciaUsuario)
 
+
 timed :: Int -> IO a -> b -> IO (Either b a)
 timed us act def = liftM (maybe (Left def) Right) (timeout us act)
 
+
 main :: IO()
 main = do
+    let timeoutSequenciaFacil = 6000000
     let sequenciaDaVez = getSequenciaDaVezFacil
     mostraElemento sequenciaDaVez
-    timeout 6000000 (getInput (sequenciaDaVez) *> putStrLn "finished on time")
+    timeout timeoutSequenciaFacil (getInput (sequenciaDaVez) *> putStrLn "finished on time")
     putStrLn ""
     
     

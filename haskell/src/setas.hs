@@ -1,7 +1,8 @@
 import Control.Concurrent
 import System.IO.Unsafe ( unsafePerformIO )                                         
 import System.Random ( Random(randomR), getStdRandom )
-
+import System.Timeout
+import Control.Monad (liftM)
 
 
 verificaSequencia :: String -> String -> String 
@@ -40,11 +41,20 @@ getSequenciaDaVezDificil = do
 getNumeroAleatorio :: Int
 getNumeroAleatorio = unsafePerformIO (getStdRandom (randomR (0, 14)))
 
-main :: IO ()
+getInput:: String -> IO()
+getInput seq = do
+    input2 <- getLine
+    let sequenciaUsuario = input2
+    print (verificaSequencia seq sequenciaUsuario)
+
+timed :: Int -> IO a -> b -> IO (Either b a)
+timed us act def = liftM (maybe (Left def) Right) (timeout us act)
+
+main :: IO()
 main = do
     let sequenciaDaVez = getSequenciaDaVezFacil
     mostraElemento sequenciaDaVez
-    input2 <- getLine
-    let sequenciaUsuario = input2
-    print (verificaSequencia sequenciaDaVez sequenciaUsuario)
+    timeout 6000000 (getInput (sequenciaDaVez) *> putStrLn "finished on time")
+    putStrLn ""
+    
     

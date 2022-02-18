@@ -1,7 +1,7 @@
 import Control.Concurrent
 import System.IO.Unsafe ( unsafePerformIO )                                         
 import System.Random ( Random(randomR), getStdRandom )
-import System.Timeout
+import System.Timeout (timeout)
 import Control.Monad (liftM)
 
 
@@ -48,8 +48,15 @@ getInput seq = do
     print (verificaSequencia seq sequenciaUsuario)
 
 
-timed :: Int -> IO a -> b -> IO (Either b a)
-timed us act def = liftM (maybe (Left def) Right) (timeout us act)
+timed :: Int -> IO () -> IO ()
+timed time action = do
+    result <- timeout time action
+    case result of
+        Nothing -> do
+            putStrLn "Tempo esgotado!"
+            return ()
+        Just _ -> do
+            return ()
 
 
 main :: IO()
@@ -57,7 +64,6 @@ main = do
     let timeoutSequenciaFacil = 6000000
     let sequenciaDaVez = getSequenciaDaVezFacil
     mostraElemento sequenciaDaVez
-    timeout timeoutSequenciaFacil (getInput (sequenciaDaVez) *> putStrLn "finished on time")
-    putStrLn ""
+    timed timeoutSequenciaFacil (getInput sequenciaDaVez)
     
     

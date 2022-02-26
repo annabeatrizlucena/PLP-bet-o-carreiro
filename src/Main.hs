@@ -41,9 +41,35 @@ getOpcoesMenu = do
 
 --listaJogos
 
+getInstrucoes :: IO()
+getInstrucoes = do
+    getInstrucoesJogoDasSetinhas
+    -- setinhas
+    -- blackjack
+    -- 777 slots
+    
+
+getInstrucoesJogoDasSetinhas :: IO()
+getInstrucoesJogoDasSetinhas = do
+    putStr "1. Jogo das Setinhas\n"
+    printEspaco
+    putStr "Ao iniciar o jogo, uma sequência de caracteres (formada pelos caracteres awsd- que, no teclado, representam setas) irá aparecer na tela do usuário. Após isso, o usuário terá um tempo (determinado de acordo com a fase) para repetir a sequência.\n"
+    printEspaco
+    putStr "$ Para a fase fácil, a sequência será de 5 caracteres e o usuário terá 6 segundos para responder;\n"
+    putStr "$ Para a fase médio, a sequência será de 7 caracteres e o usuário terá 8 segundos para responder;\n"
+    putStr "$ Para a fase fácil, a sequência será de 10 caracteres e o usuário terá 10 segundos para responder.\n"
+
+getInstrucoes777Slots :: IO()
+getInstrucoes777Slots = do
+    putStr "2. 777S lots\n"
+    printEspaco
+    putStr "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. "
+
 main :: IO()
 main = do
     telaInicial
     printEspaco
     getMoeda
     getOpcoesMenu
+    printEspaco
+    getInstrucoes

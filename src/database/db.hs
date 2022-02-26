@@ -6,7 +6,7 @@ import Database.PostgreSQL.Simple.ToRow
 
 saveUsernameAndScore :: Connection -> String -> Int -> IO ()
 saveUsernameAndScore conn username score = do
-  execute conn "INSERT INTO highscores (username, score) VALUES (?, ?)" (username, score)
+  execute conn "INSERT INTO users (username, score) VALUES (?, ?)" (username, score)
 
 main :: IO ()
 main = do

@@ -54,7 +54,7 @@ getJogo jogo = do
   if jogo == 1 then "jogo1"
   else if jogo == 2 then "jogo2"
   else if jogo == 3 then "jogo3"
-  else "erro"
+  else "Opção inválida"
 
 
 getListaDeJogos :: IO()

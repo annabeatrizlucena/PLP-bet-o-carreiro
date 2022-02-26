@@ -1,3 +1,7 @@
+module Games.SeteSeteSete(
+    start
+) where
+
 import Control.Concurrent
 import Control.Monad (Monad (return))
 import Data.List (take)
@@ -48,8 +52,8 @@ startGame bet = do
       startGame winnings
     else print bet
 
-main :: IO ()
-main = do
+start :: IO ()
+start = do
   putStrLn "Bem Vindo ao Jogo 707070! Se Perder 70 de Novo!"
   putStrLn "        Você começa com $50 BetCoin!"
   putStrLn "-=-=-=-=-=-=-=-=-=-X><X-=-=-=-=-=-=-=-=-=-=-=-=-"

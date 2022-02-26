@@ -1,8 +1,14 @@
+module Games.Setas (
+    iniciaJogoDasSetinhas
+) where
+
 import Control.Concurrent
 import Control.Monad (liftM)
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random (Random (randomR), getStdRandom)
 import System.Timeout
+
+
 
 verificaSequencia :: String -> String -> String
 verificaSequencia esperado resposta = do
@@ -58,8 +64,8 @@ execFuctionInTimeOrDie time action = do
     Just _ -> do
       return ()
 
-main :: IO ()
-main = do
+iniciaJogoDasSetinhas :: IO ()
+iniciaJogoDasSetinhas = do
   let timeoutSequenciaFacil = 6000000
   let sequenciaDaVez = getSequenciaDaVezFacil
   mostraElemento sequenciaDaVez

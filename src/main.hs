@@ -1,3 +1,10 @@
+{-# LANGUAGE GADTs #-}
+
+import Games.Setas
+import Games.SeteSeteSete
+import Games.BlackJack
+import GHC.Generics
+
 printEspaco :: IO ()
 printEspaco = do
   putStr "\n"
@@ -17,24 +24,23 @@ telaInicial = do
   printEspaco
 
 getMoeda :: IO ()
-getMoeda = do
-  putStr "                                  $$$$$$$$$$$$$$$$$$\n"
-  putStr "                                 $$$$$$$$$$$$$$$$$$$$\n"
-  putStr "                               $$$$   ==||=||==    $$$$\n"
-  putStr "                               $$$$  || || ||      $$$$\n"
-  putStr "                               $$$$  || || ||      $$$$\n"
-  putStr "                               $$$$  || || ||      $$$$\n"
-  putStr "                               $$$$   ==||======   $$$$\n"
-  putStr "                               $$$$     || ||  ||  $$$$\n"
-  putStr "                               $$$$     || ||  ||  $$$$\n"
-  putStr "                               $$$$     || ||  ||  $$$$\n"
-  putStr "                               $$$$  ===||=||===   $$$$\n"
-  putStr "                                 $$$$$$$$$$$$$$$$$$$$\n"
-  putStr "                                  $$$$$$$$$$$$$$$$$$\n"
-  printEspaco
+getMoeda = do       
+    putStrLn "                                    ██████████"
+    putStrLn "                                  ██░░░░░░░░░░██"
+    putStrLn "                                ██░░░░██░░██░░░░██"
+    putStrLn "                              ██░░░░████████░░░░░░██"
+    putStrLn "                              ██░░░░██░░░░░░██░░░░██"
+    putStrLn "                              ██░░░░████████░░░░░░██"
+    putStrLn "                              ██░░░░██░░░░░░██░░░░██"
+    putStrLn "                              ██░░░░████████░░░░░░██"
+    putStrLn "                                ██░░░░██░░██░░░░██"
+    putStrLn "                                  ██░░░░░░░░░░██"
+    putStrLn "                                    ██████████"
 
-getOpcoesMenu :: IO ()
-getOpcoesMenu = do
+    printEspaco
+
+listOpcoesMenu :: IO ()
+listOpcoesMenu = do
   putStr "Selecione a opção:\n"
   printEspaco
   putStr "1. Listagem de Jogos\n"
@@ -49,12 +55,58 @@ getCreditos = do
   putStr "Projeto da disciplina Paradigmas da Linguagem de Programação, período 2021.1.\n"
   putStr "Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena."
 
-getJogo :: Int -> String
+getJogo :: Int -> IO()
 getJogo jogo = do
-  if jogo == 1 then "jogo1"
-  else if jogo == 2 then "jogo2"
-  else if jogo == 3 then "jogo3"
-  else "Opção inválida"
+  if jogo == 1 then iniciaJogoDasSetinhas
+  else if jogo == 2 then startBlackJack
+  else if jogo == 3 then start
+  else start
+
+getSaida :: IO()
+getSaida = do
+    putStrLn "Obrigada por perder dinheiro conosco, até a próxima! :)"
+    printEspaco
+    putStrLn "                                             ▓▓▓▓                      "  
+    putStrLn "                                            ▓▓    ▓▓▓▓                "    
+    putStrLn "                                          ▓▓  ░░░░    ▓▓▓▓            "    
+    putStrLn "                                        ▓▓  ░░▒▒▒▒▒▒▒▒    ▓▓▓▓        "    
+    putStrLn "                                    ▓▓▓▓  ░░░░▒▒░░░░▒▒▒▒▒▒    ▓▓▓▓    "    
+    putStrLn "                                ▒▒▒▒░░░░▒▒▒▒░░▒▒▒▒▒▒░░░░▒▒░░░░    ▓▓▓▓"    
+    putStrLn "                            ▒▒▒▒░░░░░░░░░░░░▓▓▒▒▒▒▒▒▒▒▒▒▒▒░░░░  ▓▓▓▓  "    
+    putStrLn "                        ▓▓▓▓░░░░░░░░░░░░░░░░░░░░▓▓▒▒▒▒░░░░░░  ▓▓▓▓▓▓  "    
+    putStrLn "                  ▓▓▓▓▓▓░░░░▓▓▓▓░░░░░░░░░░░░░░░░    ▒▒▒▒░░  ▓▓▓▓▓▓▓▓  "    
+    putStrLn "            ▓▓▓▓▓▓  ░░░░▒▒▒▒▓▓▒▒▒▒▓▓░░░░░░░░          ░░▓▓▓▓▓▓▓▓▓▓▓▓  "    
+    putStrLn "        ▓▓▓▓      ░░▒▒▒▒▒▒▒▒▓▓▓▓▓▓▒▒▒▒▓▓▒▒▒▒        ▒▒▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓"    
+    putStrLn "        ▓▓▒▒▓▓▓▓    ░░▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▒▒▒▒    ▒▒▒▒▒▒▓▓▒▒▒▒▓▓▓▓▓▓▓▓  "    
+    putStrLn "      ▒▒▒▒▓▓▒▒▒▒▓▓▓▓    ░░▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓    "    
+    putStrLn "    ▒▒    ▓▓▒▒▒▒▒▒▒▒▓▓▓▓    ░░░░    ░░▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓          "
+    putStrLn "  ▒▒  ░░░░▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓    ▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒            ▒▒          "
+    putStrLn "▒▒░░░░░░▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓██████▓▓▓▓██▒▒▒▒▒▒      ▒▒▒▒▒▒▒▒▒▒        "
+    putStrLn "▒▒▒▒▒▒▒▒▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████████████████▒▒▒▒▒▒                ▒▒      "
+    putStrLn "▒▒▒▒        ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒████████████▓▓▓▓▒▒▒▒▒▒            ▒▒▒▒▒▒▒▒▒▒  "
+    putStrLn "                ▓▓▓▓▒▒▒▒▒▒▒▒████████████████      ▒▒                ░░░░▒▒"
+    putStrLn "                    ▓▓▓▓▒▒▒▒████████████          ▒▒            ▒▒▒▒▒▒▒▒▒▒"
+    putStrLn "                        ▓▓▓▓████████              ▒▒          ░░░░░░░░░░▒▒"
+    putStrLn "                            ████                    ▒▒    ░░░░░░▒▒▒▒▒▒▒▒▒▒"
+    putStrLn "                                                      ▒▒░░░░░░░░░░░░░░░░▒▒"
+    putStrLn "                                                        ▒▒░░░░░░░░▒▒▒▒▒▒▒▒"
+    putStrLn "                                                          ▒▒░░░░░░░░▒▒▒▒  "
+    putStrLn "                                                          ▒▒░░░░░░▒▒░░░░▒▒"
+    putStrLn "                                                            ▒▒░░░░░░▒▒▒▒▒▒"
+    putStrLn "                                                            ▒▒░░▒▒░░░░▒▒  "
+    putStrLn "                                                            ▒▒░░░░▒▒▒▒▒▒  "
+    putStrLn "                                                              ▒▒░░▒▒      "
+    putStrLn "                                                              ▒▒░░▒▒      "
+    putStrLn "                                                                ▒▒        "
+
+getOpcoesMenu :: Int -> IO()
+getOpcoesMenu opcao = do
+  if opcao == 1 then getListaDeJogos
+  else if opcao == 2 then getInstrucoes
+  else if opcao == 3 then getInstrucoes
+  else if opcao == 4 then getCreditos
+  else if opcao == 5 then getSaida
+  else getOpcoesMenu opcao
 
 getInstrucoes :: IO()
 getInstrucoes = do
@@ -82,17 +134,26 @@ getInstrucoes777Slots = do
 
 getListaDeJogos :: IO()
 getListaDeJogos = do
-  putStr "No Bet' O Carrero temos os seguintes jogos:\n\n1.Jogo das setinhas\n2.BlackJack\n3.777 slots"
-  putStr "Digite o número da opção que deseja:"
+  putStr "No Bet' O Carrero temos os seguintes jogos:\n"
+  printEspaco
+  putStr "1. Jogo das setinhas\n"
+  putStr "2. BlackJack\n"
+  putStr "3. 777 slots\n"
+  printEspaco
+  putStr "Digite o número da opção que deseja:\n"
   input <- getLine
   let jogo = read input
-  print(getJogo jogo)
+  getJogo jogo
 
 main :: IO()
 main = do
     telaInicial
     printEspaco
     getMoeda
-    getOpcoesMenu
+    listOpcoesMenu
     printEspaco
-    getInstrucoes
+    input <- getLine
+    let opcao = read input
+    getOpcoesMenu opcao
+    -- getListaDeJogos
+

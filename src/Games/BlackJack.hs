@@ -1,5 +1,5 @@
-module BlackJack (
-    playBlackJack
+module Games.BlackJack (
+    startBlackJack
 ) where
 
 
@@ -8,6 +8,7 @@ import System.Random ( Random(randomR), getStdRandom )
 import Players
 import Text.Printf (printf)
 import Data.Time.Clock.POSIX (posixDayLength)
+import Control.Monad.Except (replicateM)
 
 
 showPointing :: String -> Int -> Int -> IO()
@@ -134,7 +135,16 @@ playBlackJack namePlayers numPlayers = do
         -- imprimir o retorno do ganhador da rodada e quem saiu do jogo
         -- executar o playBlackJack novamente, sem o jogador perdedor
 
+startBlackJack :: IO()
+startBlackJack = do
+    printf "Quantos jogadores irao participar? (Mínimo 2)"
+    numeroJogadores <- getLine
+    let numJogadores = read numeroJogadores
 
+    printf "Insira o nome do(s) Jogador(es):"
+    listaJogadores <- replicateM numJogadores getLine
+    print (playBlackJack listaJogadores numJogadores)
+    print "aaaa"
 -- Fazer o getLoser
 -- Ajeitar para aparecer os prints
 -- Fazer o showScore

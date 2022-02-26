@@ -13,24 +13,24 @@ telaInicial = do
   putStrLn "        \\/     \\/               \\/          \\/     \\/                   \\/              "
 
   printEspaco
-  putStr "Casa de recreação que oferece jogos digitais operados por diversão"
+  putStr "          Casa de recreação que oferece jogos digitais operados por diversão"
   printEspaco
 
 getMoeda :: IO ()
 getMoeda = do
-  putStr "                      $$$$$$$$$$$$$$$$$$\n"
-  putStr "                     $$$$$$$$$$$$$$$$$$$$\n"
-  putStr "                   $$$$   ==||=||==    $$$$\n"
-  putStr "                   $$$$  || || ||      $$$$\n"
-  putStr "                   $$$$  || || ||      $$$$\n"
-  putStr "                   $$$$  || || ||      $$$$\n"
-  putStr "                   $$$$   ==||======   $$$$\n"
-  putStr "                   $$$$     || ||  ||  $$$$\n"
-  putStr "                   $$$$     || ||  ||  $$$$\n"
-  putStr "                   $$$$     || ||  ||  $$$$\n"
-  putStr "                   $$$$  ===||=||===   $$$$\n"
-  putStr "                     $$$$$$$$$$$$$$$$$$$$\n"
-  putStr "                      $$$$$$$$$$$$$$$$$$\n"
+  putStr "                                  $$$$$$$$$$$$$$$$$$\n"
+  putStr "                                 $$$$$$$$$$$$$$$$$$$$\n"
+  putStr "                               $$$$   ==||=||==    $$$$\n"
+  putStr "                               $$$$  || || ||      $$$$\n"
+  putStr "                               $$$$  || || ||      $$$$\n"
+  putStr "                               $$$$  || || ||      $$$$\n"
+  putStr "                               $$$$   ==||======   $$$$\n"
+  putStr "                               $$$$     || ||  ||  $$$$\n"
+  putStr "                               $$$$     || ||  ||  $$$$\n"
+  putStr "                               $$$$     || ||  ||  $$$$\n"
+  putStr "                               $$$$  ===||=||===   $$$$\n"
+  putStr "                                 $$$$$$$$$$$$$$$$$$$$\n"
+  putStr "                                  $$$$$$$$$$$$$$$$$$\n"
   printEspaco
 
 getOpcoesMenu :: IO ()

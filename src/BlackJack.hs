@@ -20,7 +20,7 @@ continueGame player = do
     read <$> getLine 
 
 
-playing :: [Player] -> Int -> Int -> Bool -> Either [Player] IO()
+playing :: [Player] -> Int -> Int -> Bool -> Either [Player] IO
 playing players numPlayers position start = do
     let player = players !! position
     let card = unsafePerformIO (getStdRandom (randomR (1, 13)))
@@ -30,16 +30,16 @@ playing players numPlayers position start = do
             let point = getPointing player + card
             let update = setPointing player point
             
-            showPointing (getName update) carta point
+            showPointing (getName update) card point
             [update]
         else do
             if getIsPlaying player then do
-                answer <- continueGame Player
+                answer <- continueGame player
                 if answer == 's' then do
                     let point = getPointing player + card
                     let update = setPointing player point
                     
-                    showPointing (getName update) carta point
+                    showPointing (getName update) card point
                     [update]
                 else do
                     let update = isNotPlaying player
@@ -51,15 +51,15 @@ playing players numPlayers position start = do
             let point = getPointing player + card
             let update = setPointing player point
             
-            showPointing (getName update) carta point
+            showPointing (getName update) card point
             update : playing players numPlayers (position + 1) True 
         else do
             if getIsPlaying player then do
-                answer <- continueGame Player
+                answer <- continueGame player
                 if answer == 's' then do
                     let point = getPointing player + card
                     let update = setPointing player point
-                    showPointing (getName update) carta point
+                    showPointing (getName update) card point
                     update : playing players numPlayers (position + 1) False 
                 else do
                     let update = isNotPlaying player
@@ -126,15 +126,15 @@ removeLoser players numPlayers loser posix newList = do
             removeLoser players numPlayers loser (posix + 1) notLosers
 
 
-blackjack :: [Player] -> Either String IO()
-blackjack players = do
-    play <- playing [players] numPlayers 1 True
+blackjack :: [Player] -> Int -> Either String String
+blackjack players numPlayers = do
+    play <- playing players numPlayers 1 True
     
-    let finished = allStopped play numPlayers 0 0
-    let hasWinner = checkHasWinner play numPlayers 0
+    let finished = allStopped players numPlayers 0 0
+    let hasWinner = checkHasWinner players numPlayers 0
 
     if finished || hasWinner then do
-        let loser = getLoser play numPlayers
+        let loser = getLoser players numPlayers
         showScore play 0 loser
         loser
     else
@@ -143,11 +143,11 @@ blackjack players = do
 
 endGame :: IO()
 endGame = do
-    printf ""
+    printf "terminou haha"
 -- Exibir um fim de jogo bem legal
 
 
-playBlackJack :: [String] -> Int -> Either String IO() 
+playBlackJack :: [String] -> Int -> Either String String 
 playBlackJack namePlayers numPlayers = do
     players <- createPlayers numPlayers 0 namePlayers
 
@@ -157,4 +157,4 @@ playBlackJack namePlayers numPlayers = do
     else do
         loser <- blackjack players numPlayers
         newListNames <- removeLoser players numPlayers loser 0 []
-        playBlackJack newListName (numPlayers - 1)
+        playBlackJack newListNames (numPlayers - 1)

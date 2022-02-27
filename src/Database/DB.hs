@@ -31,6 +31,9 @@ insertPhase :: Connection -> Int -> String -> String -> IO()
 savePhase conn id sequencia nivel = do
   execute conn "INSERT INTO phases (id, sequencia, nivel) VALUES (?, ?)" (id, sequencia,nivel )
 
+getPhase :: Connection -> String -> Int-> String
+getPhase conn fase id_phase = do
+  query  conn "SELECT id FROM phases WHERE id == (?)" (id_phase)
 
 main :: IO ()
 main = do

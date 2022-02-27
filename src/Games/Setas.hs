@@ -66,7 +66,32 @@ execFuctionInTimeOrDie time action = do
 
 iniciaJogoDasSetinhas :: IO ()
 iniciaJogoDasSetinhas = do
-  let timeoutSequenciaFacil = 6000000
-  let sequenciaDaVez = getSequenciaDaVezFacil
-  mostraElemento sequenciaDaVez
-  execFuctionInTimeOrDie timeoutSequenciaFacil (getInput sequenciaDaVez)
+  putStrLn "Bem Vindo ao Jogo das Setinhas"
+  putStrLn " "
+  putStrLn "Escolha sua fase:"
+  putStrLn "1. Fácil"
+  putStrLn "2. Médio"
+  putStrLn "3. Difícil"
+
+  input <- getLine
+  let opcao = read input
+  if opcao == 1 then do
+    let timeoutSequenciaFacil = 6000000
+    let sequenciaDaVez = getSequenciaDaVezFacil
+    mostraElemento sequenciaDaVez
+    execFuctionInTimeOrDie timeoutSequenciaFacil (getInput sequenciaDaVez)
+
+  else if opcao == 2 then do
+    let timeoutSequenciaMedio = 8000000
+    let sequenciaDaVez = getSequenciaDaVezMedio
+    mostraElemento sequenciaDaVez
+    execFuctionInTimeOrDie timeoutSequenciaMedio (getInput sequenciaDaVez)
+
+  else if opcao == 3 then do
+    let timeoutSequenciaDificil = 10000000
+    let sequenciaDaVez = getSequenciaDaVezDificil
+    mostraElemento sequenciaDaVez
+    execFuctionInTimeOrDie timeoutSequenciaDificil (getInput sequenciaDaVez)
+
+  else print "Opção Inválida"
+

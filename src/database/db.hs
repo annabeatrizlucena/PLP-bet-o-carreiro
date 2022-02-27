@@ -1,23 +1,30 @@
+{-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 import Database.PostgreSQL.Simple
 import Database.PostgreSQL.Simple.FromRow
-import Database.PostgreSQL.Simple.ToRow
+import GHC.Int
 
-saveUsernameAndScore :: Connection -> String -> Int -> IO ()
-saveUsernameAndScore conn username score = do
+data User = User {username :: String, score :: Int} deriving (Show, Read, Eq)
+
+instance FromRow User where
+  fromRow = User <$> field <*> field
+
+getUsers :: Connection -> IO [User]
+getUsers conn = do
+  query_ conn "SELECT username, score FROM users" :: IO [User]
+
+getUsersFiveHighestScores :: Connection -> IO [User]
+getUsersFiveHighestScores conn = do
+  query_ conn "SELECT username, score FROM users ORDER BY score DESC LIMIT 5" :: IO [User]
+
+insertUsernameAndUserScore :: Connection -> String -> Int -> IO ()
+insertUsernameAndUserScore conn username score = do
   execute conn "INSERT INTO users (username, score) VALUES (?, ?)" (username, score)
+  print username
 
 main :: IO ()
 main = do
-  conn <- connectPostgreSQL "host='ec2-3-227-195-74.compute-1.amazonaws.com' port=5432 dbname='da8upamdmubtlg' user='zwpjxbrwftjvcl' password='628983212b8777e7c19a04faec501c31df1881e8c7667c2f7a8606f2d39a93cb'"
+  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
   execute_ conn "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username VARCHAR(50) NOT NULL, score INTEGER NOT NULL)"
-  print "Created table"
-
--- Host: ec2-3-227-195-74.compute-1.amazonaws.com
--- Database: da8upamdmubtlg
--- User: zwpjxbrwftjvcl
--- Password: 628983212b8777e7c19a04faec501c31df1881e8c7667c2f7a8606f2d39a93cb
--- Port: 5432
--- URI: postgres://zwpjxbrwftjvcl:628983212b8777e7c19a04faec501c31df1881e8c7667c2f7a8606f2d39a93cb@ec2-3-227-195-74.compute-1.amazonaws.com:5432/da8upamdmubtlg
--- Heroku CLI: heroku pg:psql postgresql-elliptical-88169 --app betocarrerodatabase
+  print "Connected to database"

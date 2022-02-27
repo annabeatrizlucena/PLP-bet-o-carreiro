@@ -1,11 +1,13 @@
-module Games.SeteSeteSete(
-    start
-) where
+module Games.SeteSeteSete
+  ( start,
+  )
+where
 
 import Control.Concurrent
 import Control.Monad (Monad (return))
 import Data.List (take)
 import GHC.IO (unsafePerformIO)
+--import OurDatabase.DB (connectDB, insertUsernameAndUserScore)
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random (randomRIO)
 
@@ -33,14 +35,14 @@ playGame :: Int -> Int
 playGame bet =
   let wheels = spinWheel
    in let score = getScoreByWheels wheels
-       in unsafePerformIO $ do
-            printResult score wheels
-            return $ bet + score
+       in if score == -1
+            then bet - 1
+            else bet + score
 
 printResult :: Int -> [String] -> IO ()
 printResult winnings wheels
-  | winnings > 0 = putStrLn $ "Você ganhou " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!"
-  | otherwise = putStrLn $ "Você perdeu " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!"
+  | winnings > 0 = putStrLn $ "Você ganhou " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!\n"
+  | otherwise = putStrLn $ "Você perdeu " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!\n"
 
 startGame :: Int -> IO ()
 startGame bet = do
@@ -48,9 +50,15 @@ startGame bet = do
   answer <- getLine
   if answer == "S" || answer == "s"
     then do
-      let winnings = playGame bet
-      startGame winnings
-    else print bet
+      let newScore = playGame bet
+      let winning = newScore - bet
+      do
+        printResult winning spinWheel
+        startGame newScore
+    else do
+      --conn <- connectDB
+      --insertUsernameAndUserScore conn "TEST" bet
+      putStrLn $ "Seu score final foi de " ++ show bet ++ " pontos."
 
 start :: IO ()
 start = do
@@ -66,8 +74,3 @@ start = do
   putStrLn "6. 🍒     🍒               pays $5"
   putStrLn "7. 🍒                      pays $2"
   startGame 50
-
-convertToIOInt :: String -> IO Int
-convertToIOInt input = do
-  let inputInt = read input :: Int
-  return inputInt

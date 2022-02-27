@@ -7,7 +7,6 @@ import System.IO.Unsafe ( unsafePerformIO )
 import System.Random ( Random(randomR), getStdRandom )
 import Players
 import Text.Printf (printf)
-import Data.Time.Clock.POSIX (posixDayLength)
 
 
 showPointing :: String -> Int -> Int -> IO()
@@ -21,7 +20,7 @@ continueGame player = do
     read <$> getLine 
 
 
-playing :: [Player] -> Int -> Int -> Bool -> [Player]
+playing :: [Player] -> Int -> Int -> Bool -> Either [Player] IO()
 playing players numPlayers position start = do
     let player = players !! position
     let card = unsafePerformIO (getStdRandom (randomR (1, 13)))
@@ -30,15 +29,17 @@ playing players numPlayers position start = do
         if start then do
             let point = getPointing player + card
             let update = setPointing player point
-            -- showPointing (getName update) carta point
+            
+            showPointing (getName update) carta point
             [update]
         else do
             if getIsPlaying player then do
-                answer <- ""  -- continueGame Player
+                answer <- continueGame Player
                 if answer == 's' then do
                     let point = getPointing player + card
                     let update = setPointing player point
-                    -- showPointing (getName update) carta point
+                    
+                    showPointing (getName update) carta point
                     [update]
                 else do
                     let update = isNotPlaying player
@@ -49,15 +50,16 @@ playing players numPlayers position start = do
         if start then do
             let point = getPointing player + card
             let update = setPointing player point
-            -- showPointing (getName update) carta point
+            
+            showPointing (getName update) carta point
             update : playing players numPlayers (position + 1) True 
         else do
             if getIsPlaying player then do
-                answer <- ""  -- continueGame Player
+                answer <- continueGame Player
                 if answer == 's' then do
                     let point = getPointing player + card
                     let update = setPointing player point
-                    -- showPointing (getName update) carta point
+                    showPointing (getName update) carta point
                     update : playing players numPlayers (position + 1) False 
                 else do
                     let update = isNotPlaying player
@@ -90,52 +92,68 @@ checkHasWinner players numPlayers posix = do
 
 
 getLoser :: [Player] -> Int -> String 
-getLoser players numPlayers = do
-    
-    []
+getLoser players numPlayers posix lowPoint loser = do
+    if posix == numPlayers then 
+        loser
+    else do
+        player <- players !! posix
+        point <- getPointing player
+
+        if posix == 0 || point < lowPoint then do
+            let newLowPoint = point
+            let nameLoser = getName player
+            getLoser players numPlayers (posix + 1) newLowPoint nameLoser
+        else
+            getLoser players numPlayers (posix + 1) lowPoint loser
 
 
 showScore :: [Player] -> Int -> String -> IO()
-showScore players index nameLoser = do
+showScore players index nameLoser posix = do
     printf ""
+-- Apresentar um placar com a pontuação dos jogadores e o nome do que perdeu
 
 
--- blackjack :: [Player] -> String
--- blackjack players = do
---     play <- playing [players] numPlayers 1 True
---     let finished = allStopped play numPlayers 0 0
---     let hasWinner = checkHasWinner play numPlayers 0
+removeLoser :: [Player] -> Int -> String -> Int -> [String] -> [String]
+removeLoser players numPlayers loser posix newList = do
+    if posix == numPlayers then newList
+    else do
+        playerName <- getName (players !! posix)
+        
+        if playerName == loser then
+            removeLoser players numPlayers loser (posix + 1) newList
+        else do
+            notLosers <- newList : playerName
+            removeLoser players numPlayers loser (posix + 1) notLosers
 
---     if finished then
---         let loser = getLoser play numPlayers "allFinished"
---         -- showScore play 0 loser
---     else if hasWinner then
---         let loser = getLoser play numPlayers "hasWinner"
---         -- showScore play 0 loser
---     else
---         blackjack play
+
+blackjack :: [Player] -> Either String IO()
+blackjack players = do
+    play <- playing [players] numPlayers 1 True
+    
+    let finished = allStopped play numPlayers 0 0
+    let hasWinner = checkHasWinner play numPlayers 0
+
+    if finished || hasWinner then do
+        let loser = getLoser play numPlayers
+        showScore play 0 loser
+        loser
+    else
+        blackjack play
+
+
+endGame :: IO()
+endGame = do
+    printf ""
+-- Exibir um fim de jogo bem legal
 
 
 playBlackJack :: [String] -> Int -> String 
 playBlackJack namePlayers numPlayers = do
     players <- createPlayers numPlayers 0 namePlayers
 
-    if numPlayers == 2 then do
-        -- executar o blackjack para jogar
-        -- Imprimir o retorno do blackjack informando o ganhador do jogo
-        -- 
-        -- 
-        []  -- realizar uma continuação até que se tenha todos os jogadores finalizados 
-            -- ou pelo menos um deles com 21
-    else 
-        []
-        -- executa o blackjack para jogar
-        -- executa o removeLoser para retirar a pessoa com maior quantidade de pontos
-        -- imprimir o retorno do ganhador da rodada e quem saiu do jogo
-        -- executar o playBlackJack novamente, sem o jogador perdedor
-
-
--- Fazer o getLoser
--- Ajeitar para aparecer os prints
--- Fazer o showScore
--- Terminar o playBlackJack
+    if numPlayers == 2 then
+        blackjack players numPlayers
+    else do
+        loser <- blackjack players numPlayers
+        newListNames <- removeLoser players numPlayers loser 0 []
+        playBlackJack newListName (numPlayers - 1)

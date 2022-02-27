@@ -147,12 +147,13 @@ endGame = do
 -- Exibir um fim de jogo bem legal
 
 
-playBlackJack :: [String] -> Int -> String 
+playBlackJack :: [String] -> Int -> Either String IO() 
 playBlackJack namePlayers numPlayers = do
     players <- createPlayers numPlayers 0 namePlayers
 
     if numPlayers == 2 then
         blackjack players numPlayers
+        endGame
     else do
         loser <- blackjack players numPlayers
         newListNames <- removeLoser players numPlayers loser 0 []

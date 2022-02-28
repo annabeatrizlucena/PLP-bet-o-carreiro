@@ -1,4 +1,4 @@
-module Database.DB (
+module DB (
     insertPhase
 ) where
 
@@ -33,7 +33,7 @@ savePhase conn id sequencia nivel = do
 
 getPhase :: Connection -> String -> Int-> String
 getPhase conn fase id_phase = do
-  query  conn "SELECT id FROM phases WHERE id == (?)" (id_phase)
+  query  conn "SELECT id FROM phases AS p WHERE p.id == (?)" (id_phase)
 
 main :: IO ()
 main = do

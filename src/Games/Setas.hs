@@ -8,6 +8,15 @@ import Control.Monad (liftM)
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random (Random (randomR), getStdRandom)
 import System.Timeout
+import qualified System.Process as SP
+
+clearScreen :: IO ()
+clearScreen = do
+  _ <- SP.system "reset"
+  return ()
+
+--import Database.DB
+
 
 printEspaco :: IO ()
 printEspaco = do
@@ -20,6 +29,7 @@ verificaSequencia esperado resposta = do
     else print "RESPOSTA INCORRETA :("
   
 
+
 mostraElemento :: String -> IO ()
 mostraElemento string = do
   if not (null string)
@@ -28,29 +38,36 @@ mostraElemento string = do
       Control.Concurrent.threadDelay 1000000
       mostraElemento (drop 1 string)
     else do
-      putStrLn ".\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\nInsira a sequência Correta:"
+      clearScreen
+      
+      -- putStrLn ".\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\nInsira a sequência Correta:"
+-- getSequenciaDaVezFacil :: String
+-- getSequenciaDaVezFacil = do
+--   let numeroAleatorio = getNumeroAleatorio
+--   let listaFacil = ["aaswd", "aaswd", "wdsaw", "swdaa", "dwsdd", "wswaa", "dsaws", "sswda", "sdaws", "ddasw", "awsdw", "sadws", "dawsw", "sawds", "awdsa", "wasda"]
+--   listaFacil !! numeroAleatorio 0 14
 
 getSequenciaDaVezFacil :: String
 getSequenciaDaVezFacil = do
-  let numeroAleatorio = getNumeroAleatorio
-  let listaFacil = ["aaswd", "aaswd", "wdsaw", "swdaa", "dwsdd", "wswaa", "dsaws", "sswda", "sdaws", "ddasw", "awsdw", "sadws", "dawsw", "sawds", "awdsa", "wasda"]
-  listaFacil !! numeroAleatorio
+  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
+  let numeroAleatorio = getNumeroAleatorio 1 15
+  let sequencia = getPhase conn "facil" numeroAleatorio
 
-getSequenciaDaVezMedio :: String
-getSequenciaDaVezMedio = do
-  let numeroAleatorio = getNumeroAleatorio
-  let listaMedio = ["wdsaawdswasdwad", "awdswsdawasdaws", "wsadwsdwsdwsdaw", "awsdwsdawdsawsa", "awaaawsdswwdads", "dsadwswswadswsa", "swdsadwswswsads", "dswaswddswsawsd", "wsaswswsdwawsws", "awswwwdddsssawd", "dawdwsdwswdwsda", "wsdawswsswswdwd", "awaawwdwdwadaas", "ssadwswasswsswa", "asdwswaswsasass"]
-  listaMedio !! numeroAleatorio
+-- getSequenciaDaVezMedio :: String
+-- getSequenciaDaVezMedio = do
+--   conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
+--   let numeroAleatorio = getNumeroAleatorio 16 30
+--   let sequencia = getPhase conn "medio" numeroAleatorio
 
-getSequenciaDaVezDificil :: String
-getSequenciaDaVezDificil = do
-  let numeroAleatorio = getNumeroAleatorio
-  let listaDificil = ["asswswsdsadssdawssaw", "sdwasdwsaswsdwdsadsw", "wswsswddsawsdswsaswd", "daswswsdsawaswdwswwa", "sdaswsawsdwdswswsdwd", "swddswssawddswdswdsa", "dwsawsawdswsddadawws", "sasdaswsswsadwwsdsad", "daddwsaswsawdwsadsad", "sawdswswsdsawdsswssw", "wasdwsswdswssaswdswa", "wswsdwswswssasasassa", "asddsaswasswsswsddwd", "dsdsswasdswdswsdwdsw", "sawsdwsasddswdswsaws"]
-  listaDificil !! numeroAleatorio
+-- getSequenciaDaVezDificil :: String
+-- getSequenciaDaVezDificil = do
+--   conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
+--   let numeroAleatorio = getNumeroAleatorio 31 45
+--   let sequencia = getPhase conn "dificil" numeroAleatorio
 
-getNumeroAleatorio :: Int
+getNumeroAleatorio :: Int -> Int -> Int
 {-# NOINLINE getNumeroAleatorio #-}
-getNumeroAleatorio = unsafePerformIO (getStdRandom (randomR (0, 14)))
+getNumeroAleatorio inicio fim = unsafePerformIO (getStdRandom (randomR (inicio, fim)))
 
 getInput :: String -> IO ()
 getInput seq = do
@@ -87,19 +104,19 @@ iniciaJogoDasSetinhas = do
     execFuctionInTimeOrDie timeoutSequenciaFacil (getInput sequenciaDaVez)
     iniciaJogoDasSetinhas
 
-  else if opcao == 2 then do
-    let timeoutSequenciaMedio = 8000000
-    let sequenciaDaVez = getSequenciaDaVezMedio
-    mostraElemento sequenciaDaVez
-    execFuctionInTimeOrDie timeoutSequenciaMedio (getInput sequenciaDaVez)
-    iniciaJogoDasSetinhas
+  -- else if opcao == 2 then do
+  --   let timeoutSequenciaMedio = 8000000
+  --   let sequenciaDaVez = getSequenciaDaVezMedio
+  --   mostraElemento sequenciaDaVez
+  --   execFuctionInTimeOrDie timeoutSequenciaMedio (getInput sequenciaDaVez)
+  --   iniciaJogoDasSetinhas
 
-  else if opcao == 3 then do
-    let timeoutSequenciaDificil = 10000000
-    let sequenciaDaVez = getSequenciaDaVezDificil
-    mostraElemento sequenciaDaVez
-    execFuctionInTimeOrDie timeoutSequenciaDificil (getInput sequenciaDaVez)
-    iniciaJogoDasSetinhas
+  -- else if opcao == 3 then do
+  --   let timeoutSequenciaDificil = 10000000
+  --   let sequenciaDaVez = getSequenciaDaVezDificil
+  --   mostraElemento sequenciaDaVez
+  --   execFuctionInTimeOrDie timeoutSequenciaDificil (getInput sequenciaDaVez)
+  --   iniciaJogoDasSetinhas
 
   else do
     putStr "Opcao Invalida"

@@ -1,4 +1,4 @@
-import Database.DB
+import DB
 
 insertPhase 1 "aaswd" "facil"
 insertPhase 2 "wdsaw" "facil"

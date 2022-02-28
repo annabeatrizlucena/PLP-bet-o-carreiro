@@ -1,6 +1,8 @@
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+module DatabasePostgre.DataPost where
+
 import Database.PostgreSQL.Simple
 import Database.PostgreSQL.Simple.FromRow
 import GHC.Int
@@ -21,10 +23,15 @@ getUsersFiveHighestScores conn = do
 insertUsernameAndUserScore :: Connection -> String -> Int -> IO ()
 insertUsernameAndUserScore conn username score = do
   execute conn "INSERT INTO users (username, score) VALUES (?, ?)" (username, score)
-  print username
+  putStrLn ""
 
-main :: IO ()
-main = do
-  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
+createTables :: Connection -> IO ()
+createTables conn = do
   execute_ conn "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username VARCHAR(50) NOT NULL, score INTEGER NOT NULL)"
-  print "Connected to database"
+  print "Table created"
+
+conectToPostDatabase :: IO Connection
+conectToPostDatabase = do
+  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
+  putStrLn ""
+  return conn

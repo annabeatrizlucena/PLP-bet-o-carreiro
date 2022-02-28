@@ -43,7 +43,7 @@ listOpcoesMenu :: IO ()
 listOpcoesMenu = do
   putStr "Selecione a opção:\n"
   printEspaco
-  putStr "1. Listagem de Jogos\n"
+  putStr "1. Escolha seu jogo\n"
   putStr "2. Instruções\n"
   putStr "3. Ranking dos Jogadores\n"
   putStr "4. Créditos\n"
@@ -60,7 +60,7 @@ getJogo jogo = do
   if jogo == 1 then iniciaJogoDasSetinhas
   else if jogo == 2 then startBlackJack
   else if jogo == 3 then start
-  else start
+  else putStr "Opção inválida"
 
 getSaida :: IO()
 getSaida = do
@@ -155,5 +155,4 @@ main = do
     input <- getLine
     let opcao = read input
     getOpcoesMenu opcao
-    -- getListaDeJogos
 

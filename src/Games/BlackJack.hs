@@ -1,151 +1,66 @@
-module Games.BlackJack (
-    startBlackJack
-) where
+import Cards
+import Game
+import Util.Shurffle(Shuffle) -- usado para deixar a escolha das cartas aleatoria
+import Data.String (String)
 
+-- faz o loop do jogo
+runGame :: Game -> IO ()
+runGame currentState@
+  (Game player@(Player playerHand) betoCarreiro@(Player betHand) cStatus deck)
+  | cStatus == PlayerTurn = do
+      putStrLn $ "Sua vez :"
+      putStrLn $ "Você: " ++ show playerHand ++ " (" ++ show (score playerHand) ++ ")"
+      putStrLn $ "Banca: " ++ show (head betHand) ++
+        " (>" ++ show (score [head betHand]) ++ ")\n"
+      playerMove <- continueOrStop
+      runGame (playerTurn currentState playerMove) 
+  | cStatus == CasinoTurn = do
+      putStrLn "Round da Banca"
+      putStrLn $ "Você: " ++ show playerHand ++ " (" ++ show (score playerHand) ++ ")"
+      putStrLn $ "Banca: " ++ show betHand ++ " (" ++ show (score betHand) ++ ")\n"
+      runGame (casinoTurn currentState)
+  | cStatus == GameOver = do
+      putStrLn $ "Fim de jogo; " ++  winner currentState
+      putStrLn $ "Você: " ++ show playerHand ++ " (" ++ show (score playerHand) ++ ")"
+      putStrLn $ "Banca: " ++ show betHand ++ " (" ++ show (score betHand) ++ ")\n"
+      putStrLn $ "\n Vamos registar seu nome para salvar sua pontuação no ranking :) \n"
+      playerName <- registerPlayer
+      -- salva no banco playerName e score pHand
+      playerChoice <- playAgain
+      if (playerChoice == 1)
+      then do initBlackJackGame
+      else return ()
+  | otherwise = return ()
 
-import System.IO.Unsafe ( unsafePerformIO )  
-import System.Random ( Random(randomR), getStdRandom )
-import Players
-import Text.Printf (printf)
-import Data.Time.Clock.POSIX (posixDayLength)
-import Control.Monad.Except (replicateM)
+registerPlayer:: IO String
+registerPlayer =do
+  putStrLn "Informe Seu nome: "
+  name <- getLine
+  return name
 
+-- Pergunta se deseja puxar mais cartas ou parar
+continueOrStop :: IO Int
+continueOrStop = do
+    putStrLn "Deseja continuar retirando cartas?"
+    putStrLn "[1] Continuar"
+    putStrLn "[2] Parar"
+    option <- getLine
+    let optionInt = read option :: Int
+    return optionInt
 
-showPointing :: String -> Int -> Int -> IO()
-showPointing name card point = do
-    printf (name ++ ", sua carta e: " ++ show card ++ "\n" ++ "Sua pontuação total e: " ++ show point)
+-- Pergunta se deseja jogar novamente apos o fim
+playAgain :: IO Int
+playAgain = do
+    putStrLn "Jogar Novamente?"
+    putStrLn "[1] Sim"
+    putStrLn "[2] Não"
+    option <- getLine
+    let optionInt = read option :: Int
+    return optionInt
 
-
-continueGame :: Player -> IO() 
-continueGame player = do
-    printf ("Sua pontuacao: " ++ show (getPointing player) ++ "\n" ++ "Deseja continuar a jogar? [s/n]")
-    read <$> getLine 
-
-
-playing :: [Player] -> Int -> Int -> Bool -> [Player]
-playing players numPlayers position start = do
-    let player = players !! position
-    let card = unsafePerformIO (getStdRandom (randomR (1, 13)))
-
-    if position == numPlayers then do
-        if start then do
-            let point = getPointing player + card
-            let update = setPointing player point
-            -- showPointing (getName update) carta point
-            [update]
-        else do
-            if getIsPlaying player then do
-                answer <- ""  -- continueGame Player
-                if answer == 's' then do
-                    let point = getPointing player + card
-                    let update = setPointing player point
-                    -- showPointing (getName update) carta point
-                    [update]
-                else do
-                    let update = isNotPlaying player
-                    [update]
-            else
-                [player]
-    else 
-        if start then do
-            let point = getPointing player + card
-            let update = setPointing player point
-            -- showPointing (getName update) carta point
-            update : playing players numPlayers (position + 1) True 
-        else do
-            if getIsPlaying player then do
-                answer <- ""  -- continueGame Player
-                if answer == 's' then do
-                    let point = getPointing player + card
-                    let update = setPointing player point
-                    -- showPointing (getName update) carta point
-                    update : playing players numPlayers (position + 1) False 
-                else do
-                    let update = isNotPlaying player
-                    update : playing players numPlayers (position + 1) False 
-            else
-                player : playing players numPlayers (position + 1) False
-
-
-allStopped :: [Player] -> Int -> Int -> Int -> Bool 
-allStopped players numPlayers posix numStopped = do
-    let player = players !! posix
-
-    if posix == numPlayers then
-        numStopped == numPlayers 
-    else do
-        if getIsPlaying player then
-            allStopped players numPlayers (posix + 1) (numStopped + 1)
-        else
-            allStopped players numPlayers (posix + 1) numStopped
-
-
-checkHasWinner :: [Player] -> Int -> Int -> Bool 
-checkHasWinner players numPlayers posix = do
-    let player = players !! posix
-    
-    if getPointing player == 21 then
-        True 
-    else
-        checkHasWinner players numPlayers (posix + 1)
-
-
-getLoser :: [Player] -> Int -> String 
-getLoser players numPlayers = do
-    
-    []
-
-
-showScore :: [Player] -> Int -> String -> IO()
-showScore players index nameLoser = do
-    printf ""
-
-
--- blackjack :: [Player] -> String
--- blackjack players = do
---     play <- playing [players] numPlayers 1 True
---     let finished = allStopped play numPlayers 0 0
---     let hasWinner = checkHasWinner play numPlayers 0
-
---     if finished then
---         let loser = getLoser play numPlayers "allFinished"
---         -- showScore play 0 loser
---     else if hasWinner then
---         let loser = getLoser play numPlayers "hasWinner"
---         -- showScore play 0 loser
---     else
---         blackjack play
-
-
-playBlackJack :: [String] -> Int -> String 
-playBlackJack namePlayers numPlayers = do
-    players <- createPlayers numPlayers 0 namePlayers
-
-    if numPlayers == 2 then do
-        -- executar o blackjack para jogar
-        -- Imprimir o retorno do blackjack informando o ganhador do jogo
-        -- 
-        -- 
-        []  -- realizar uma continuação até que se tenha todos os jogadores finalizados 
-            -- ou pelo menos um deles com 21
-    else 
-        []
-        -- executa o blackjack para jogar
-        -- executa o removeLoser para retirar a pessoa com maior quantidade de pontos
-        -- imprimir o retorno do ganhador da rodada e quem saiu do jogo
-        -- executar o playBlackJack novamente, sem o jogador perdedor
-
-startBlackJack :: IO()
-startBlackJack = do
-    printf "Quantos jogadores irao participar? (Mínimo 2)"
-    numeroJogadores <- getLine
-    let numJogadores = read numeroJogadores
-
-    printf "Insira o nome do(s) Jogador(es):"
-    listaJogadores <- replicateM numJogadores getLine
-    print (playBlackJack listaJogadores numJogadores)
-    print "aaaa"
--- Fazer o getLoser
--- Ajeitar para aparecer os prints
--- Fazer o showScore
--- Terminar o playBlackJack
+initBlackJackGame :: IO ()
+initBlackJackGame = do
+  putStrLn "\n Bem vindo a mesa de apostas do BlackJack!"
+  randomCards <- shuffle deck
+  let game = startGame randomCards
+  runGame game 

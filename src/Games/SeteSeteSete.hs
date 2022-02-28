@@ -6,10 +6,15 @@ where
 import Control.Concurrent
 import Control.Monad (Monad (return))
 import Data.List (take)
+import Database.PostgreSQL.Simple.FromField (name)
+import DatabasePostgre.DataPost
+  ( conectToPostDatabase,
+    insertUsernameAndUserScore,
+  )
 import GHC.IO (unsafePerformIO)
---import OurDatabase.DB (connectDB, insertUsernameAndUserScore)
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random (randomRIO)
+import Util.Shuffle (shuffle)
 
 spinWheel :: [String]
 spinWheel =
@@ -56,9 +61,11 @@ startGame bet = do
         printResult winning spinWheel
         startGame newScore
     else do
-      --conn <- connectDB
-      --insertUsernameAndUserScore conn "TEST" bet
-      putStrLn $ "Seu score final foi de " ++ show bet ++ " pontos."
+      putStrLn "Digite o seu nome para salvar sua pontuação:"
+      input <- getLine
+      conn <- conectToPostDatabase
+      insertUsernameAndUserScore conn input bet
+      putStrLn $ "Seu score final foi de " ++ show bet ++ " pontos. 😊"
 
 start :: IO ()
 start = do

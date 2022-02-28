@@ -111,11 +111,9 @@ getOpcoesMenu opcao = do
 getInstrucoes :: IO()
 getInstrucoes = do
     getInstrucoesJogoDasSetinhas
-    -- setinhas
-    -- blackjack
-    -- 777 slots
+    getInstrucoes777Slots
+    getInstrucoesBlackJack
     
-
 getInstrucoesJogoDasSetinhas :: IO()
 getInstrucoesJogoDasSetinhas = do
     putStr "1. Jogo das Setinhas\n"
@@ -130,7 +128,13 @@ getInstrucoes777Slots :: IO()
 getInstrucoes777Slots = do
     putStr "2. 777S lots\n"
     printEspaco
-    putStr "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. "
+    putStr "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. Cada sequência tem um valor pré-estabelecido. "
+
+getInstrucoesBlackJack :: IO()
+getInstrucoesBlackJack
+  putStr "3. BlackJack\n"
+  printEspaco
+  putStr "O objetivo de qualquer mão de Blackjack é derrotar o dealer. Para fazer isso, você deve ter uma mão em que a pontuação seja mais elevada do que a mão do dealer, mas não exceda 21 no valor total. Como alternativa, você pode ganhar tendo uma pontuação menor que 22 quando o valor da mão do dealer ultrapassar 21."
 
 getListaDeJogos :: IO()
 getListaDeJogos = do

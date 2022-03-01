@@ -1,5 +1,5 @@
 module Games.Setas (
-    iniciaJogoDasSetinhas
+    initArrowsGame
 ) where
 {-# LANGUAGE GADTs #-}
 
@@ -15,55 +15,54 @@ clearScreen = do
   _ <- SP.system "reset"
   return ()
 
-printEspaco :: IO ()
-printEspaco = do
+printSpace :: IO ()
+printSpace = do
   putStr "\n"
 
-verificaSequencia :: String -> String -> IO()
-verificaSequencia esperado resposta = do
-  if esperado == resposta
+checkSequence :: String -> String -> IO()
+checkSequence expected answer = do
+  if expected == answer
     then print "RESPOSTA CORRETA! :)"
     else print "RESPOSTA INCORRETA :("
   
-
-
-mostraElemento :: String -> IO ()
-mostraElemento string = do
+printCharacter :: String -> IO ()
+printCharacter string = do
   if not (null string)
     then do
       print (head string)
       Control.Concurrent.threadDelay 1000000
-      mostraElemento (drop 1 string)
+      printCharacter (drop 1 string)
     else do
       clearScreen
       
-getSequenciaDaVezFacil :: String
-getSequenciaDaVezFacil = do
-  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
-  let numeroAleatorio = getNumeroAleatorio 1 15
-  let sequencia = getPhase conn "facil" numeroAleatorio
+getSequenceEasy :: String 
+getSequenceEasy = do
+    let aleatoryNumber = getAleatoryNumber 0 14
+    let easyList = ["aaswd","aaswd","wdsaw","swdaa","dwsdd","wswaa","dsaws","sswda","sdaws","ddasw","awsdw","sadws","dawsw","sawds","awdsa","wasda"]
+    easyList!!aleatoryNumber 
 
-getSequenciaDaVezMedio :: String
-getSequenciaDaVezMedio = do
-  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
-  let numeroAleatorio = getNumeroAleatorio 16 30
-  let sequencia = getPhase conn "medio" numeroAleatorio
+getSequenceMiddle :: String 
+getSequenceMiddle = do
+    let aleatoryNumber = getAleatoryNumber 0 14
+    let middleList = ["wdsaawd","awdswsd","wsadwsd","awsdwsd","awaaaws","dsadwsw","swdsadw","dswaswd","wsaswsw","awswwwd","dawdwsd","wsdawsw","awaawwd","ssadwsw","asdwswa"]
+    middleList!!aleatoryNumber 
 
-getSequenciaDaVezDificil :: String
-getSequenciaDaVezDificil = do
-  conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
-  let numeroAleatorio = getNumeroAleatorio 31 45
-  let sequencia = getPhase conn "dificil" numeroAleatorio
+getSequenceHard :: String 
+getSequenceHard = do
+    let aleatoryNumber = getAleatoryNumber 0 14
+    let hardList = ["asswswsdsa","sdwasdwsas","wswsswddsa","daswswsdsa","sdaswsawsd","swddswssaw","dwsawsawds","asdaswssws","sawdwsadsd","sawdswswsd","wasdwsswds","wswsdwswsw","asddsaswas","dsdsswasds","sawsdwsasd"]
+    hardList!!aleatoryNumber
 
-getNumeroAleatorio :: Int -> Int -> Int
-{-# NOINLINE getNumeroAleatorio #-}
-getNumeroAleatorio inicio fim = unsafePerformIO (getStdRandom (randomR (inicio, fim)))
+
+getAleatoryNumber :: Int -> Int -> Int
+{-# NOINLINE getAleatoryNumber #-}
+getAleatoryNumber first end = unsafePerformIO (getStdRandom (randomR (first, end)))
 
 getInput :: String -> IO ()
 getInput seq = do
   input2 <- getLine
-  let sequenciaUsuario = input2
-  verificaSequencia seq sequenciaUsuario
+  let userSequence = input2
+  checkSequence seq userSequence
 
 execFuctionInTimeOrDie :: Int -> IO () -> IO ()
 execFuctionInTimeOrDie time action = do
@@ -76,8 +75,8 @@ execFuctionInTimeOrDie time action = do
       return ()
 
 
-iniciaJogoDasSetinhas :: IO ()
-iniciaJogoDasSetinhas = do
+initArrowsGame :: IO ()
+initArrowsGame = do
   putStrLn "Bem Vindo ao Jogo das Setinhas"
   putStrLn " "
   putStrLn "Escolha sua fase:"
@@ -86,30 +85,30 @@ iniciaJogoDasSetinhas = do
   putStrLn "3. Difícil"
 
   input <- getLine
-  let opcao = read input
-  if opcao == 1 then do
-    let timeoutSequenciaFacil = 6000000
-    let sequenciaDaVez = getSequenciaDaVezFacil
-    mostraElemento sequenciaDaVez
-    execFuctionInTimeOrDie timeoutSequenciaFacil (getInput sequenciaDaVez)
-    iniciaJogoDasSetinhas
+  let option = read input
+  if option == 1 then do
+    let timeoutEasySequence = 6000000
+    let currentSequence = getSequenceEasy
+    printCharacter currentSequence
+    execFuctionInTimeOrDie timeoutEasySequence (getInput currentSequence)
+    initArrowsGame
 
-  else if opcao == 2 then do
-    let timeoutSequenciaMedio = 8000000
-    let sequenciaDaVez = getSequenciaDaVezMedio
-    mostraElemento sequenciaDaVez
-    execFuctionInTimeOrDie timeoutSequenciaMedio (getInput sequenciaDaVez)
-    iniciaJogoDasSetinhas
+  else if option == 2 then do
+    let timeoutMiddleSequence = 8000000
+    let currentSequence = getSequenceMiddle
+    printCharacter currentSequence
+    execFuctionInTimeOrDie timeoutMiddleSequence (getInput currentSequence)
+    initArrowsGame
 
-  else if opcao == 3 then do
-    let timeoutSequenciaDificil = 10000000
-    let sequenciaDaVez = getSequenciaDaVezDificil
-    mostraElemento sequenciaDaVez
-    execFuctionInTimeOrDie timeoutSequenciaDificil (getInput sequenciaDaVez)
-    iniciaJogoDasSetinhas
+  else if option == 3 then do
+    let timeoutHardSequence = 10000000
+    let currentSequence = getSequenceHard
+    printCharacter currentSequence
+    execFuctionInTimeOrDie timeoutHardSequence (getInput currentSequence)
+    initArrowsGame
 
   else do
-    putStr "Opcao Invalida"
-    printEspaco
-    iniciaJogoDasSetinhas
+    putStr "option Invalida"
+    printSpace
+    initArrowsGame
 

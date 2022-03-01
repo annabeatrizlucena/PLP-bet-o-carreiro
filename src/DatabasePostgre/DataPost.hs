@@ -40,11 +40,3 @@ conectToPostDatabase = do
   conn <- connectPostgreSQL "host='ec2-52-204-196-4.compute-1.amazonaws.com' port=5432 dbname='dchdcr7iap07pl' user='alxxpufsycowxx' password='ff89341db8b88bd30ae01f43290cbe396c7e3340fba82ebb52915b6a0f560998'"
   putStrLn ""
   return conn
-insertPhase :: Connection -> Int -> String -> String -> IO ()
-insertPhase conn id sequencia nivel = do
-  execute conn "INSERT INTO phases (id, sequencia, nivel) VALUES (?, ?, ?)" (id, sequencia, nivel)
-  print id
-
-getPhase :: Connection -> IO [Phase]
-getPhase conn = do
-  query_ conn "SELECT phases.sequencia FROM phases WHERE id = (1)" :: IO [Phase]

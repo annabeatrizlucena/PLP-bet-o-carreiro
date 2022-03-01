@@ -1,8 +1,15 @@
+module Games.BlackJack (
+    initBlackJackGame
+) where
 import Cards
 import Game
 import Util.Shurffle(Shuffle) -- usado para deixar a escolha das cartas aleatoria
 import Data.String (String)
-
+import Database.PostgreSQL.Simple.FromField (name)
+import DatabasePostgre.DataPost
+  ( conectToPostDatabase,
+    insertUsernameAndUserScore,
+  )
 -- faz o loop do jogo
 runGame :: Game -> IO ()
 runGame currentState@
@@ -25,6 +32,8 @@ runGame currentState@
       putStrLn $ "Banca: " ++ show betHand ++ " (" ++ show (score betHand) ++ ")\n"
       putStrLn $ "\n Vamos registar seu nome para salvar sua pontuação no ranking :) \n"
       playerName <- registerPlayer
+      conn <- conectToPostDatabase
+      insertUsernameAndUserScore conn playerName score pHand
       -- salva no banco playerName e score pHand
       playerChoice <- playAgain
       if (playerChoice == 1)

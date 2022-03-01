@@ -43,7 +43,7 @@ listOpcoesMenu :: IO ()
 listOpcoesMenu = do
   putStr "Selecione a opção:\n"
   printEspaco
-  putStr "1. Listagem de Jogos\n"
+  putStr "1. Escolha seu jogo\n"
   putStr "2. Instruções\n"
   putStr "3. Ranking dos Jogadores\n"
   putStr "4. Créditos\n"
@@ -60,7 +60,7 @@ getJogo jogo = do
   if jogo == 1 then iniciaJogoDasSetinhas
   else if jogo == 2 then startBlackJack
   else if jogo == 3 then start
-  else start
+  else putStr "Opção inválida"
 
 getSaida :: IO()
 getSaida = do
@@ -111,11 +111,9 @@ getOpcoesMenu opcao = do
 getInstrucoes :: IO()
 getInstrucoes = do
     getInstrucoesJogoDasSetinhas
-    -- setinhas
-    -- blackjack
-    -- 777 slots
+    getInstrucoes777Slots
+    getInstrucoesBlackJack
     
-
 getInstrucoesJogoDasSetinhas :: IO()
 getInstrucoesJogoDasSetinhas = do
     putStr "1. Jogo das Setinhas\n"
@@ -130,7 +128,13 @@ getInstrucoes777Slots :: IO()
 getInstrucoes777Slots = do
     putStr "2. 777S lots\n"
     printEspaco
-    putStr "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. "
+    putStr "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. Cada sequência tem um valor pré-estabelecido. "
+
+getInstrucoesBlackJack :: IO()
+getInstrucoesBlackJack
+  putStr "3. BlackJack\n"
+  printEspaco
+  putStr "O objetivo de qualquer mão de Blackjack é derrotar o dealer. Para fazer isso, você deve ter uma mão em que a pontuação seja mais elevada do que a mão do dealer, mas não exceda 21 no valor total. Como alternativa, você pode ganhar tendo uma pontuação menor que 22 quando o valor da mão do dealer ultrapassar 21."
 
 getListaDeJogos :: IO()
 getListaDeJogos = do
@@ -155,5 +159,4 @@ main = do
     input <- getLine
     let opcao = read input
     getOpcoesMenu opcao
-    -- getListaDeJogos
 

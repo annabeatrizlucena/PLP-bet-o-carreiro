@@ -1,7 +1,6 @@
 module Games.Setas (
     initArrowsGame
 ) where
-{-# LANGUAGE GADTs #-}
 
 import Control.Concurrent
 import Control.Monad (liftM)
@@ -9,6 +8,7 @@ import System.IO.Unsafe (unsafePerformIO)
 import System.Random (Random (randomR), getStdRandom)
 import System.Timeout
 import qualified System.Process as SP
+import Util.Shuffle (shuffle)
 
 clearScreen :: IO ()
 clearScreen = do
@@ -37,26 +37,29 @@ printCharacter string = do
       
 getSequenceEasy :: String 
 getSequenceEasy = do
-    let aleatoryNumber = getAleatoryNumber 0 14
+    -- let aleatoryNumber = getAleatoryNumber 0 14
     let easyList = ["aaswd","aaswd","wdsaw","swdaa","dwsdd","wswaa","dsaws","sswda","sdaws","ddasw","awsdw","sadws","dawsw","sawds","awdsa","wasda"]
-    easyList!!aleatoryNumber 
+    return (shuffle easyList)!!
+    -- easyList!!aleatoryNumber 
 
 getSequenceMiddle :: String 
 getSequenceMiddle = do
-    let aleatoryNumber = getAleatoryNumber 0 14
+    -- let aleatoryNumber = getAleatoryNumber 0 14
     let middleList = ["wdsaawd","awdswsd","wsadwsd","awsdwsd","awaaaws","dsadwsw","swdsadw","dswaswd","wsaswsw","awswwwd","dawdwsd","wsdawsw","awaawwd","ssadwsw","asdwswa"]
-    middleList!!aleatoryNumber 
+    return (shuffle easyList)!!0
+    -- middleList!!aleatoryNumber 
 
 getSequenceHard :: String 
 getSequenceHard = do
-    let aleatoryNumber = getAleatoryNumber 0 14
+    -- let aleatoryNumber = getAleatoryNumber 0 14
     let hardList = ["asswswsdsa","sdwasdwsas","wswsswddsa","daswswsdsa","sdaswsawsd","swddswssaw","dwsawsawds","asdaswssws","sawdwsadsd","sawdswswsd","wasdwsswds","wswsdwswsw","asddsaswas","dsdsswasds","sawsdwsasd"]
-    hardList!!aleatoryNumber
+    return (shuffle easyList)!!0
+    -- hardList!!aleatoryNumber
 
 
-getAleatoryNumber :: Int -> Int -> Int
-{-# NOINLINE getAleatoryNumber #-}
-getAleatoryNumber first end = unsafePerformIO (getStdRandom (randomR (first, end)))
+-- getAleatoryNumber :: Int -> Int -> Int
+-- {-# NOINLINE getAleatoryNumber #-}
+-- getAleatoryNumber first end = unsafePerformIO (getStdRandom (randomR (first, end)))
 
 getInput :: String -> IO ()
 getInput seq = do

@@ -1,3 +1,7 @@
+module Games.BlackJack (
+    initBlackJackGame
+) where
+
 import Cards
 import Game
 import Util.Shurffle(Shuffle) -- usado para deixar a escolha das cartas aleatoria

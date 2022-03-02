@@ -1,5 +1,5 @@
 module Games.Setas (
-    main
+    initArrowsGame
 ) where
 
 import Control.Concurrent
@@ -73,8 +73,8 @@ execFuctionInTimeOrDie time action = do
       return ()
 
 
-main :: IO ()
-main = do
+initArrowsGame :: IO ()
+initArrowsGame = do
   putStrLn "Bem Vindo ao Jogo das Setinhas"
   putStrLn " "
   putStrLn "Escolha sua fase:"
@@ -90,21 +90,21 @@ main = do
     let currentSequence = getSequenceEasy
     printCharacter currentSequence
     execFuctionInTimeOrDie timeoutEasySequence (getInput currentSequence)
-    main
+    initArrowsGame
 
   else if option == 2 then do
     let timeoutMiddleSequence = 8000000
     let currentSequence = getSequenceMiddle
     printCharacter currentSequence
     execFuctionInTimeOrDie timeoutMiddleSequence (getInput currentSequence)
-    main
+    initArrowsGame
 
   else if option == 3 then do
     let timeoutHardSequence = 10000000
     let currentSequence = getSequenceHard
     printCharacter currentSequence
     execFuctionInTimeOrDie timeoutHardSequence (getInput currentSequence)
-    main
+    initArrowsGame
 
   else if option == 4 then do
     return ()
@@ -112,4 +112,4 @@ main = do
   else do
     putStr "option Invalida"
     printSpace
-    main
+    initArrowsGame

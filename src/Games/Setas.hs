@@ -39,7 +39,7 @@ getSequenceEasy :: String
 getSequenceEasy = do
     -- let aleatoryNumber = getAleatoryNumber 0 14
     let easyList = ["aaswd","aaswd","wdsaw","swdaa","dwsdd","wswaa","dsaws","sswda","sdaws","ddasw","awsdw","sadws","dawsw","sawds","awdsa","wasda"]
-    return (shuffle easyList)!!
+    return (shuffle easyList)!!0
     -- easyList!!aleatoryNumber 
 
 getSequenceMiddle :: String 

@@ -1,5 +1,5 @@
 module Games.Setas (
-    initArrowsGame
+    main
 ) where
 
 import Control.Concurrent
@@ -8,7 +8,6 @@ import System.IO.Unsafe (unsafePerformIO)
 import System.Random (Random (randomR), getStdRandom)
 import System.Timeout
 import qualified System.Process as SP
-import Util.Shuffle (shuffle)
 
 clearScreen :: IO ()
 clearScreen = do
@@ -37,29 +36,25 @@ printCharacter string = do
       
 getSequenceEasy :: String 
 getSequenceEasy = do
-    -- let aleatoryNumber = getAleatoryNumber 0 14
+    let aleatoryNumber = getAleatoryNumber 0 14
     let easyList = ["aaswd","aaswd","wdsaw","swdaa","dwsdd","wswaa","dsaws","sswda","sdaws","ddasw","awsdw","sadws","dawsw","sawds","awdsa","wasda"]
-    return (shuffle easyList)!!
-    -- easyList!!aleatoryNumber 
+    easyList!!aleatoryNumber 
 
 getSequenceMiddle :: String 
 getSequenceMiddle = do
-    -- let aleatoryNumber = getAleatoryNumber 0 14
+    let aleatoryNumber = getAleatoryNumber 0 14
     let middleList = ["wdsaawd","awdswsd","wsadwsd","awsdwsd","awaaaws","dsadwsw","swdsadw","dswaswd","wsaswsw","awswwwd","dawdwsd","wsdawsw","awaawwd","ssadwsw","asdwswa"]
-    return (shuffle easyList)!!0
-    -- middleList!!aleatoryNumber 
+    middleList!!aleatoryNumber 
 
 getSequenceHard :: String 
 getSequenceHard = do
-    -- let aleatoryNumber = getAleatoryNumber 0 14
+    let aleatoryNumber = getAleatoryNumber 0 14
     let hardList = ["asswswsdsa","sdwasdwsas","wswsswddsa","daswswsdsa","sdaswsawsd","swddswssaw","dwsawsawds","asdaswssws","sawdwsadsd","sawdswswsd","wasdwsswds","wswsdwswsw","asddsaswas","dsdsswasds","sawsdwsasd"]
-    return (shuffle easyList)!!0
-    -- hardList!!aleatoryNumber
+    hardList!!aleatoryNumber
 
-
--- getAleatoryNumber :: Int -> Int -> Int
--- {-# NOINLINE getAleatoryNumber #-}
--- getAleatoryNumber first end = unsafePerformIO (getStdRandom (randomR (first, end)))
+getAleatoryNumber :: Int -> Int -> Int
+{-# NOINLINE getAleatoryNumber #-}
+getAleatoryNumber first end = unsafePerformIO (getStdRandom (randomR (first, end)))
 
 getInput :: String -> IO ()
 getInput seq = do
@@ -78,14 +73,15 @@ execFuctionInTimeOrDie time action = do
       return ()
 
 
-initArrowsGame :: IO ()
-initArrowsGame = do
+main :: IO ()
+main = do
   putStrLn "Bem Vindo ao Jogo das Setinhas"
   putStrLn " "
   putStrLn "Escolha sua fase:"
   putStrLn "1. Fácil"
   putStrLn "2. Médio"
   putStrLn "3. Difícil"
+  putStrLn "4. Sair"
 
   input <- getLine
   let option = read input
@@ -94,24 +90,26 @@ initArrowsGame = do
     let currentSequence = getSequenceEasy
     printCharacter currentSequence
     execFuctionInTimeOrDie timeoutEasySequence (getInput currentSequence)
-    initArrowsGame
+    main
 
   else if option == 2 then do
     let timeoutMiddleSequence = 8000000
     let currentSequence = getSequenceMiddle
     printCharacter currentSequence
     execFuctionInTimeOrDie timeoutMiddleSequence (getInput currentSequence)
-    initArrowsGame
+    main
 
   else if option == 3 then do
     let timeoutHardSequence = 10000000
     let currentSequence = getSequenceHard
     printCharacter currentSequence
     execFuctionInTimeOrDie timeoutHardSequence (getInput currentSequence)
-    initArrowsGame
+    main
+
+  else if option == 4 then do
+    return ()
 
   else do
     putStr "option Invalida"
     printSpace
-    initArrowsGame
-
+    main

@@ -30,6 +30,11 @@ insertUsernameAndUserScore conn username score = do
   execute conn "INSERT INTO users (username, score) VALUES (?, ?)" (username, score)
   putStrLn ""
 
+updateUsernameAndUserScore :: Connection -> String -> Int -> IO ()
+updateUsernameAndUserScore conn username score = do
+  execute conn "UPDATE users SET score = ? WHERE username = ?" (score, username)
+  putStrLn ""
+
 createTables :: Connection -> IO ()
 createTables conn = do
   execute_ conn "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username VARCHAR(50) NOT NULL, score INTEGER NOT NULL)"

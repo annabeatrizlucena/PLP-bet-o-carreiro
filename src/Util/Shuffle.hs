@@ -1,4 +1,4 @@
-module Util.Shuffle where
+module Util.Shuffle (shuffle) where
 
 -- Algorithm from Haskell Docs: https://wiki.haskell.org/Random_shuffle
 

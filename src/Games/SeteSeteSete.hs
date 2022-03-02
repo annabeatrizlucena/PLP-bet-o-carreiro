@@ -61,11 +61,11 @@ startGame bet = do
         printResult winning spinWheel
         startGame newScore
     else do
-      putStrLn "Digite o seu nome para salvar sua pontuação:"
+      putStrLn "Vamos registar seu nome para salvar suas betcoins no ranking 😊"
       input <- getLine
       conn <- conectToPostDatabase
       insertUsernameAndUserScore conn input bet
-      putStrLn $ "Seu score final foi de " ++ show bet ++ " pontos. 😊"
+      putStrLn $ "Seu score final foi de " ++ show bet ++ " betcoins. 😊"
 
 start :: IO ()
 start = do

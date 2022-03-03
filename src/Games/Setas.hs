@@ -22,8 +22,8 @@ printSpace = do
 checkSequence :: String -> String -> IO ()
 checkSequence expected answer = do
   if expected == answer
-    then print "RESPOSTA CORRETA! 😎"
-    else print "RESPOSTA INCORRETA 😭"
+    then print "Resposta Correta! 😎"
+    else print "Resposta Incorreta 😭"
 
 printCharacter :: String -> IO ()
 printCharacter string = do
@@ -68,7 +68,7 @@ execFuctionInTimeOrDie time action = do
   result <- timeout time action
   case result of
     Nothing -> do
-      putStrLn "Tempo esgotado! ⏱️"
+      putStrLn "Tempo Esgotado! ⏱️"
       return ()
     Just _ -> do
       return ()

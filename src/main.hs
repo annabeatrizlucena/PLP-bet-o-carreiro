@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs #-}
 
+import DatabasePostgre.DataPost
 import GHC.Generics
 import Games.BlackJack
 import Games.Setas
@@ -112,7 +113,7 @@ getMenuOptions opcao = do
         then getInstructions
         else
           if opcao == 3
-            then getInstructions
+            then listagemRank
             else
               if opcao == 4
                 then getCredits
@@ -161,6 +162,20 @@ getGameList = do
   input <- getLine
   let game = read input
   getGame game
+
+formatUserScore :: User -> String
+formatUserScore (User nome pontuacao) = nome ++ "\t\t    " ++ show pontuacao
+
+listagemRank :: IO ()
+listagemRank = do
+  putStrLn "   Listagem de Rank"
+  putStrLn "   -------\\o/-------"
+  printSpace
+  putStrLn "Nome\t\tPontuação"
+  putStrLn "-------------------------"
+  conn <- conectToPostDatabase
+  top5 <- getUsersFiveHighestScores conn
+  mapM_ (putStrLn . formatUserScore) top5
 
 main :: IO ()
 main = do

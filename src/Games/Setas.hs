@@ -6,18 +6,9 @@ where
 import Control.Concurrent
 import Control.Monad (liftM)
 import System.IO.Unsafe (unsafePerformIO)
-import qualified System.Process as SP
 import System.Random (Random (randomR), getStdRandom)
 import System.Timeout
-
-clearScreen :: IO ()
-clearScreen = do
-  _ <- SP.system "reset"
-  return ()
-
-printSpace :: IO ()
-printSpace = do
-  putStr "\n"
+import Util.General
 
 checkSequence :: String -> String -> IO ()
 checkSequence expected answer = do

@@ -5,10 +5,7 @@ import GHC.Generics
 import Games.BlackJack
 import Games.Setas
 import Games.SeteSeteSete
-
-printSpace :: IO ()
-printSpace = do
-  putStr "\n"
+import Util.General
 
 homeScreen :: IO ()
 homeScreen = do
@@ -161,6 +158,7 @@ getGameList = do
   putStr "Digite o número da opção que deseja:\n"
   input <- getLine
   let game = read input
+  clearScreen
   getGame game
 
 formatUserScore :: User -> String
@@ -179,6 +177,7 @@ listagemRank = do
 
 main :: IO ()
 main = do
+  clearScreen
   homeScreen
   printSpace
   getBetCoin
@@ -186,4 +185,5 @@ main = do
   printSpace
   input <- getLine
   let opcao = read input
+  clearScreen
   getMenuOptions opcao

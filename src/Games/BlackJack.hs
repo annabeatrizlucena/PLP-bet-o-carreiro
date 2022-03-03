@@ -37,8 +37,8 @@ runGame
       putStrLn $ "Fim de jogo; " ++ winner currentState
       putStrLn $ "Você: " ++ show playerHand ++ " (" ++ show (score playerHand) ++ ")"
       putStrLn $ "Banca: " ++ show betHand ++ " (" ++ show (score betHand) ++ ")\n"
-      putStrLn $ "\n Vamos registar seu nome para salvar suas betcoins no ranking 😊 \n"
-      putStrLn "Digite seu nome: "
+      putStrLn $ "\n Vamos Registar Seu Nome Para Salvar Suas Betcoins no Ranking 😊 \n"
+      putStrLn "Digite Seu Nome: "
       playerName <- getLine
       conn <- conectToPostDatabase
       insertUsernameAndUserScore conn playerName 0
@@ -52,7 +52,7 @@ runGame
 -- Pergunta se deseja puxar mais cartas ou parar
 continueOrStop :: IO Int
 continueOrStop = do
-  putStrLn "Deseja continuar retirando cartas?"
+  putStrLn "Deseja Continuar Retirando Cartas?"
   putStrLn "[1] Continuar"
   putStrLn "[2] Parar"
   option <- getLine
@@ -62,7 +62,7 @@ continueOrStop = do
 -- Pergunta se deseja jogar novamente apos o fim
 playAgain :: IO Int
 playAgain = do
-  putStrLn "Jogar Novamente?"
+  putStrLn "Deseja Jogar Novamente?"
   putStrLn "[1] Sim"
   putStrLn "[2] Não"
   option <- getLine
@@ -71,7 +71,7 @@ playAgain = do
 
 initBlackJackGame :: IO ()
 initBlackJackGame = do
-  putStrLn "\n Bem vindo a mesa de apostas do BlackJack!"
+  putStrLn "\n Bem Vindo à Mesa de Apostas do BlackJack!"
   randomCards <- shuffle deck
   let game = startGame randomCards
   runGame game

@@ -13,8 +13,8 @@ import Util.General
 checkSequence :: String -> String -> IO ()
 checkSequence expected answer = do
   if expected == answer
-    then print "RESPOSTA CORRETA! 😎"
-    else print "RESPOSTA INCORRETA 😭"
+    then print "Resposta Correta! 😎"
+    else print "Resposta Incorreta 😭"
 
 printCharacter :: String -> IO ()
 printCharacter string = do
@@ -59,7 +59,7 @@ execFuctionInTimeOrDie time action = do
   result <- timeout time action
   case result of
     Nothing -> do
-      putStrLn "Tempo esgotado! ⏱️"
+      putStrLn "Tempo Esgotado! ⏱️"
       return ()
     Just _ -> do
       return ()
@@ -69,10 +69,10 @@ initArrowsGame = do
   putStrLn "Bem Vindo ao Jogo das Setinhas ⬅️⬆️➡️"
   putStrLn " "
   putStrLn "Escolha sua fase:"
-  putStrLn "1. Fácil"
-  putStrLn "2. Médio"
-  putStrLn "3. Difícil"
-  putStrLn "4. Sair"
+  putStrLn "[1] Fácil"
+  putStrLn "[2] Médio"
+  putStrLn "[3] Difícil"
+  putStrLn "[4] Sair"
 
   input <- getLine
   let option = read input
@@ -82,6 +82,7 @@ initArrowsGame = do
       let currentSequence = getSequenceEasy
       printCharacter currentSequence
       execFuctionInTimeOrDie timeoutEasySequence (getInput currentSequence)
+      clearScreen
       initArrowsGame
     else
       if option == 2
@@ -90,6 +91,7 @@ initArrowsGame = do
           let currentSequence = getSequenceMiddle
           printCharacter currentSequence
           execFuctionInTimeOrDie timeoutMiddleSequence (getInput currentSequence)
+          clearScreen
           initArrowsGame
         else
           if option == 3
@@ -98,12 +100,13 @@ initArrowsGame = do
               let currentSequence = getSequenceHard
               printCharacter currentSequence
               execFuctionInTimeOrDie timeoutHardSequence (getInput currentSequence)
+              clearScreen
               initArrowsGame
             else
               if option == 4
                 then do
                   return ()
                 else do
-                  putStr "option Invalida"
+                  putStr "Opção Inválida"
                   printSpace
                   initArrowsGame

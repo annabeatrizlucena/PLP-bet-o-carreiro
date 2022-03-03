@@ -39,18 +39,18 @@ getBetCoin = do
 
 listMenuOptions :: IO ()
 listMenuOptions = do
-  putStr "Selecione a opção:\n"
+  putStr "Selecione a Opção:\n"
   printSpace
-  putStr "1. Escolha seu jogo\n"
-  putStr "2. Instruções\n"
-  putStr "3. Ranking dos Jogadores\n"
-  putStr "4. Créditos\n"
-  putStr "5. Sair\n"
+  putStr "[1] Escolha seu Jogo\n"
+  putStr "[2] Instruções\n"
+  putStr "[3] Ranking dos Jogadores\n"
+  putStr "[4] Créditos\n"
+  putStr "[5] Sair\n"
 
 getCredits :: IO ()
 getCredits = do
   putStr "Projeto da disciplina Paradigmas da Linguagem de Programação, período 2021.1.\n"
-  putStr "Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena."
+  putStr "Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena.\n"
 
 getGame :: Int -> IO ()
 getGame jogo = do
@@ -121,9 +121,13 @@ getMenuOptions opcao = do
 
 getInstructions :: IO ()
 getInstructions = do
+  printSpace
   getInstructionsArrowsGame
+  printSpace
   getInstructions777Slots
+  printSpace
   getInstructionsBlackJack
+  printSpace
 
 getInstructionsArrowsGame :: IO ()
 getInstructionsArrowsGame = do
@@ -151,9 +155,9 @@ getGameList :: IO ()
 getGameList = do
   putStr "No Bet' O Carrero temos os seguintes jogos:\n"
   printSpace
-  putStr "1. Jogo das setinhas\n"
-  putStr "2. BlackJack\n"
-  putStr "3. 777 slots\n"
+  putStr "[1] Jogo das setinhas\n"
+  putStr "[2] BlackJack\n"
+  putStr "[3] 777 slots\n"
   printSpace
   putStr "Digite o número da opção que deseja:\n"
   input <- getLine

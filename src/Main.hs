@@ -141,7 +141,7 @@ getInstructionsArrowsGame = do
 
 getInstructions777Slots :: IO ()
 getInstructions777Slots = do
-  putStr "2. 777S lots\n"
+  putStr "2. 777 Slots\n"
   printSpace
   putStrLn "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. Cada sequência tem um valor pré-estabelecido. "
 

@@ -13,8 +13,8 @@ import Util.General
 checkSequence :: String -> String -> IO ()
 checkSequence expected answer = do
   if expected == answer
-    then print "Resposta Correta! 😎"
-    else print "Resposta Incorreta 😭"
+    then print "Resposta Correta!"
+    else print "Resposta Incorreta!"
 
 printCharacter :: String -> IO ()
 printCharacter string = do
@@ -78,35 +78,37 @@ initArrowsGame = do
   let option = read input
   if option == 1
     then do
+      clearScreen
       let timeoutEasySequence = 6000000
       let currentSequence = getSequenceEasy
       printCharacter currentSequence
       execFuctionInTimeOrDie timeoutEasySequence (getInput currentSequence)
-      clearScreen
       initArrowsGame
     else
       if option == 2
         then do
+          clearScreen
           let timeoutMiddleSequence = 8000000
           let currentSequence = getSequenceMiddle
           printCharacter currentSequence
           execFuctionInTimeOrDie timeoutMiddleSequence (getInput currentSequence)
-          clearScreen
           initArrowsGame
         else
           if option == 3
             then do
+              clearScreen
               let timeoutHardSequence = 10000000
               let currentSequence = getSequenceHard
               printCharacter currentSequence
               execFuctionInTimeOrDie timeoutHardSequence (getInput currentSequence)
-              clearScreen
               initArrowsGame
             else
               if option == 4
                 then do
+                  clearScreen
                   return ()
                 else do
+                  clearScreen
                   putStr "Opção Inválida"
                   printSpace
                   initArrowsGame

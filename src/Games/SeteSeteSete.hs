@@ -13,17 +13,18 @@ import DatabasePostgre.DataPost
   )
 import GHC.IO (unsafePerformIO)
 import System.IO.Unsafe (unsafePerformIO)
-import System.Random (randomRIO)
-import Util.Shuffle (shuffle)
+import System.Random
+
+getRandomInteger :: (Int, Int) -> Int
+getRandomInteger (a, b) = unsafePerformIO (randomRIO (a, b))
+
+randomEmoji :: String
+randomEmoji = do
+  let i = getRandomInteger (0, 4)
+  ["🍫", "🔔", "💩", "🍊", "🍒"] !! i
 
 spinWheel :: [String]
-spinWheel =
-  let wheel = ["🍫", "🔔", "💩", "🍊", "🍒"]
-   in unsafePerformIO $ do
-        randomIndex1 <- randomRIO (0, 4 :: Int)
-        randomIndex2 <- randomRIO (0, 4 :: Int)
-        randomIndex3 <- randomRIO (0, 4 :: Int)
-        return [wheel !! randomIndex1, wheel !! randomIndex2, wheel !! randomIndex3]
+spinWheel = [randomEmoji, randomEmoji, randomEmoji]
 
 getScoreByWheels :: [String] -> Int
 getScoreByWheels wheel

@@ -26,7 +26,7 @@ startGame
 winner :: Game -> [Char]
 winner game@(Game player@(Player playerHand) casino@(Player casinoHand) gStatus _)
   | gStatus /= GameOver = error "Ainda não é possivel um vencendor."
-  | isBust player || (score casinoHand > score casinoHand && not (isBust casino)) =
+  | isBust player || (score casinoHand > score playerHand && not (isBust casino)) =
     "A banca ganhou!"
   | score casinoHand == score playerHand || (blackjack casinoHand && blackjack playerHand) = "Empate."
   | blackjack casinoHand = "A banca ganhou!"
@@ -34,7 +34,7 @@ winner game@(Game player@(Player playerHand) casino@(Player casinoHand) gStatus 
 
 playerTurn :: Game -> Int -> Game
 playerTurn game@(Game player@(Player hand) casino gStatus deck) playerMove
-  | (playerMove == 1) = progressGame (hit game)
+  | playerMove == 1 = progressGame (hit game)
   | otherwise = progressGame (Game player casino PlayerStayed deck)
 
 casinoTurn :: Game -> Game

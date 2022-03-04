@@ -70,7 +70,7 @@ checkPlayerWin (Game player@(Player playerHand) betoCarreiro@(Player betHand) cS
 -- Pergunta se deseja puxar mais cartas ou parar
 continueOrStop :: IO Int
 continueOrStop = do
-  putStrLn "Deseja continuar retirando cartas?"
+  putStrLn "Deseja Continuar Retirando Cartas?"
   putStrLn "[1] Continuar"
   putStrLn "[2] Parar"
   option <- getLine

@@ -47,12 +47,12 @@ playGame bet =
 
 printResult :: Int -> [String] -> IO ()
 printResult winnings wheels
-  | winnings > 0 = putStrLn $ "Você ganhou " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!\n"
-  | otherwise = putStrLn $ "Você perdeu " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!\n"
+  | winnings > 0 = putStrLn $ "Você Ganhou " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!\n"
+  | otherwise = putStrLn $ "Você Perdeu " ++ show winnings ++ " com " ++ head wheels ++ " " ++ wheels !! 1 ++ " " ++ wheels !! 2 ++ "!\n"
 
 startGame :: Int -> IO ()
 startGame bet = do
-  putStrLn "Você quer jogar? (S/N)"
+  putStrLn "Você Quer Jogar? (S/N)"
   answer <- getLine
   if answer == "S" || answer == "s"
     then do
@@ -62,7 +62,7 @@ startGame bet = do
         printResult winning spinWheel
         startGame newScore
     else do
-      putStrLn "Vamos registar seu nome para salvar suas betcoins no ranking 😊"
+      putStrLn "Vamos Registar Seu Nome Para Salvar Suas Betcoins no Ranking 😊"
       input <- getLine
       conn <- conectToPostDatabase
       insertUsernameAndUserScore conn input bet
@@ -71,9 +71,9 @@ startGame bet = do
 start :: IO ()
 start = do
   putStrLn "Bem Vindo ao Jogo 707070! Se Perder 70 de Novo!"
-  putStrLn "        Você começa com $50 BetCoin!"
+  putStrLn "        Você Começa Com $50 BetCoins!"
   putStrLn "-=-=-=-=-=-=-=-=-=-X><X-=-=-=-=-=-=-=-=-=-=-=-=-"
-  putStrLn "Você ganha com a seguintes combinações:"
+  putStrLn "Você Ganha Com as Seguintes Combinações:"
   putStrLn "1. 🍫     🍫    🍫         pays $250"
   putStrLn "2. 🔔     🔔    🔔    🍫   pays $20"
   putStrLn "3. 💩     💩    💩    🍫   pays $14"

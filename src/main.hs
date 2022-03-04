@@ -58,7 +58,7 @@ getGame jogo = do
     then initArrowsGame
     else
       if jogo == 2
-        then initBlackJackGame
+        then initBlackJackGame 0
         else
           if jogo == 3
             then start

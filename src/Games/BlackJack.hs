@@ -12,6 +12,7 @@ import DatabasePostgre.DataPost
   )
 import Games.Cards
 import Games.Game
+import Util.General
 import Util.Shuffle
 
 keepScore :: Int -> Int -> Int
@@ -23,7 +24,8 @@ runGame
   currentState@(Game player@(Player playerHand) betoCarreiro@(Player betHand) cStatus deck)
   winScore
     | cStatus == PlayerTurn = do
-      putStrLn $ "Sua vez :"
+      putStrLn "Sua vez :"
+      printSpace
       putStrLn $ "Você: " ++ show playerHand ++ " (" ++ show (score playerHand) ++ ")"
       putStrLn $
         "Banca: " ++ show (head betHand)
@@ -31,6 +33,7 @@ runGame
           ++ show (score [head betHand])
           ++ ")\n"
       playerMove <- continueOrStop
+      clearScreen
       runGame (playerTurn currentState playerMove) winScore
     | cStatus == CasinoTurn = do
       putStrLn "Round da Banca"
@@ -45,8 +48,10 @@ runGame
       playerChoice <- playAgain actualWinScore
       if playerChoice == 1
         then do
+          clearScreen
           initBlackJackGame actualWinScore
         else do
+          clearScreen
           putStrLn "\n Vamos registar seu nome para salvar suas betcoins no ranking 😊 \n"
           putStrLn "Digite seu nome: "
           playerName <- getLine
@@ -89,7 +94,9 @@ playAgain score = do
 
 initBlackJackGame :: Int -> IO ()
 initBlackJackGame winScore = do
-  putStrLn "\n Bem vindo a mesa de apostas do BlackJack!"
+  clearScreen
+  putStrLn "Bem vindo a mesa de apostas do BlackJack!"
+  printSpace
   randomCards <- shuffle deck
   let game = startGame randomCards
   runGame game winScore

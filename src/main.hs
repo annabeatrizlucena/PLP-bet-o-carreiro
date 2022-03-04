@@ -143,7 +143,7 @@ getInstructions777Slots :: IO ()
 getInstructions777Slots = do
   putStr "2. 777S lots\n"
   printSpace
-  putStr "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. Cada sequência tem um valor pré-estabelecido. "
+  putStrLn "Ao iniciar o jogo, uma sequência de 3 figuras aleatórias aparecerá na tela do usuário. Cada sequência tem um valor pré-estabelecido. "
 
 getInstructionsBlackJack :: IO ()
 getInstructionsBlackJack = do

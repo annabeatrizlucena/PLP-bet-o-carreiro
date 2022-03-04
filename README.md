@@ -10,7 +10,7 @@
 
 <br></br>
 
-O **Bet'O Carreiro** é um projeto desenvolvido para a disciplina de Paradigmas de Linguagem de Programação, com a afinalidade de exercitar o uso de linguagens funcionais e lógicas
+O **Bet'O Carreiro** é um projeto desenvolvido para a disciplina de Paradigmas de Linguagem de Programação, com a finalidade de exercitar o uso de linguagens funcionais e lógicas
 
 Consiste em um cassino com diversos jogos implementados unicamente para você perder o seu dinheiro com alegria :).
 

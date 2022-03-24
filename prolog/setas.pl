@@ -13,13 +13,13 @@ getHardPhase(X) :-
     Lista = ["asswswsdsa", "sdwasdwsas", "wswsswddsa", "daswswsdsa", "sdaswsawsd", "swddswssaw", "dwsawsawds", "asdaswssws", "sawdwsadsd", "sawdswswsd", "wasdwsswds", "wswsdwswsw", "asddsaswas", "dsdsswasds", "sawsdwsasd"],
     nth0(R, Lista, X).
 
-verificaCaractere(X,L) :- L = [X|_].
-verificaCaractere(X,L) :- L = [_|Z], verificaCaractere(X,Z).
 
-printCaractere([X|L]) :-
+validateSequence(A,A).
+
+printCharacter([X|L]) :-
     writeln(X),
     sleep(2),
-    printCaractere(L).
+    printCharacter(L).
 
 initArrowsGame :-
   writeln("Bem Vindo ao Jogo das Setinhas ⬅️⬆️➡️"),
@@ -30,6 +30,26 @@ initArrowsGame :-
   writeln("[3] Difícil"),
   writeln("[4] Sair").
 
+getOption(1,X) :-
+    getEasyPhase(X),
+    string_chars(X,List),
+    printCharacter(List).
+
+getOption(2,X) :-
+    getMiddlePhase(X),
+    string_chars(X,List),
+    printCharacter(List).
+
+getOption(3,X) :-
+    getHardPhase(X),
+    string_chars(X,List),
+    printCharacter(List).
+
+compareSequence :-
+    getOption(1,X),
+    read(Y),
+    validateSequence(X,Y).
+
 cls :- write('\33\[2J').
 
 getPhase(1,X) :- getEasyPhase(X).
@@ -37,10 +57,5 @@ getPhase(2,X) :- getMiddlePhase(X).
 getPhase(3,X) :- getHardPhase(X).
 
 main :-
-    initArrowsGame,
-    writeln(" "),
-    read(A),
-    getPhase(A,X),
-    string_chars(X,Lista),
-    printCaractere(Lista), halt.
+    initArrowsGame.
     

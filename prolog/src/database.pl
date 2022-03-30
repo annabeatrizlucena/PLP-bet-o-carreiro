@@ -1,4 +1,4 @@
-:- module(database, [add_player/2]).
+:- module(database, [add_player/2, get_scores/2]).
 
 add_player(N, S) :-
     atom_concat(N, ',', N1),

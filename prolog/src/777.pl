@@ -1,3 +1,5 @@
+:- module(setesetesete, [start/0]).
+
 :- use_module(database).
 
 start:-

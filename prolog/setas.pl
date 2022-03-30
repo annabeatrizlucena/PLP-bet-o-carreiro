@@ -45,10 +45,19 @@ getOption(3,X) :-
     string_chars(X,List),
     printCharacter(List).
 
+getOption(4,X) :-
+    halt.
+
 compareSequence :-
     getOption(1,X),
     read(Y),
     validateSequence(X,Y).
+
+getUserInput :-
+    current_input(I),
+    wait_for_input([I], [Input], 5),
+    read_string(Input, _, String),
+    writeln(String), halt.
 
 cls :- write('\33\[2J').
 
@@ -57,5 +66,8 @@ getPhase(2,X) :- getMiddlePhase(X).
 getPhase(3,X) :- getHardPhase(X).
 
 main :-
-    initArrowsGame.
+    initArrowsGame,
+    read(Input),
+    getOption(Input, X),
+    getUserInput.
     

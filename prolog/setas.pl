@@ -57,5 +57,9 @@ getPhase(2,X) :- getMiddlePhase(X).
 getPhase(3,X) :- getHardPhase(X).
 
 main :-
-    initArrowsGame.
+    initArrowsGame,
+    current_input(I),
+    wait_for_input([I], [Input], 5),
+    read(Input, Move),
+    writeln(Move), halt.
     

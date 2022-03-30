@@ -50,6 +50,12 @@ compareSequence :-
     read(Y),
     validateSequence(X,Y).
 
+getUserInput :-
+    current_input(I),
+    wait_for_input([I], [Input], 5),
+    read(Input, Move),
+    writeln(Move), halt.
+
 cls :- write('\33\[2J').
 
 getPhase(1,X) :- getEasyPhase(X).
@@ -58,8 +64,5 @@ getPhase(3,X) :- getHardPhase(X).
 
 main :-
     initArrowsGame,
-    current_input(I),
-    wait_for_input([I], [Input], 5),
-    read(Input, Move),
-    writeln(Move), halt.
+    getUserInput.
     

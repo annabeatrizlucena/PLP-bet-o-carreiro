@@ -45,6 +45,9 @@ getOption(3,X) :-
     string_chars(X,List),
     printCharacter(List).
 
+getOption(4,X) :-
+    halt.
+
 compareSequence :-
     getOption(1,X),
     read(Y),

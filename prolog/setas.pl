@@ -64,5 +64,7 @@ getPhase(3,X) :- getHardPhase(X).
 
 main :-
     initArrowsGame,
+    read(Input),
+    getOption(Input, X),
     getUserInput.
     

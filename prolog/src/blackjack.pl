@@ -1,3 +1,5 @@
+:- module(blackjack, [init/0]).
+
 :- dynamic points/2.
 :- dynamic previousCard/3.
 :- dynamic cardNumber/2.

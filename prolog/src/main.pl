@@ -1,3 +1,8 @@
+:- use_module(database).
+:- use_module(util).
+:- use_module(blackjack).
+:- use_module(setesetesete).
+
 cls :- write("\33[2J").
 
 homeScreen :- 
@@ -39,42 +44,47 @@ homeScreen :-
   writeln("[4] Créditos"),
   writeln("[5] Sair").
 
-% getGameList :-
-%  writeln("No Bet' O Carrero temos os seguintes jogos:"),
-%  writeln(" "),
-%  writeln("[1] Jogo das setinhas"),
-%  writeln("[2] BlackJack"),
-%  writeln("[3] 777 slots"),
-%  writeln(" "),
-%  write("Digite o número da opção que deseja:").
-%  read(X),
-%  cls,
-%  getGame(X).
+getGameList :-
+  writeln("No Bet' O Carrero temos os seguintes jogos:"),
+  writeln(" "),
+  writeln("[1] Jogo das setinhas"),
+  writeln("[2] BlackJack"),
+  writeln("[3] 777 slots"),
+  writeln(" "),
+  write("Digite o número da opção que deseja:"),
+  read(X),
+  getGame(X),
+  cls.
 
-getRanking :-
-  writeln("teste").
+getRanking(X, R1):-
+  get_scores(X, R1),
+  writeln("Ranking dos Jogadores:"),
+  writeln(" "),
+  writeln("Nome  |  Pontuação"),
+  writeln(" "),
+  print_score(R1),
+  halt.
 
-getGame :-
-  writeln("aquiiiiiii").
+getGame(1) :-
+  writeln('Setinha Pô!').
+getGame(2) :-
+  init.
+getGame(3) :-
+  start.
 
-% nao funcionando
+
 option(1):- getGameList.
-
-% funcionando
 option(2):- getInstructions.
-
-% incompleto ainda
-option(3):- getRanking.
-
-% funcionando
+option(3):- getRanking(_, _).
 option(4):- getCredits.
 option(5):- exitMensage.
 
 
  getCredits :-
- 
+  cls,
   writeln("Projeto da disciplina Paradigmas da Linguagem de Programação, período 2021.1."),
-  writeln("Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena.").
+  writeln("Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena."),
+  halt.
 
 
 exitMensage :-
@@ -115,12 +125,14 @@ exitMensage :-
   writeln("                                                                ▒▒        ").
 
 getInstructions :-
+  cls,
   writeln(" "),
   getInstructionsArrowsGame,
   writeln(" "),
   getInstructions777Slots,
   writeln(" "),
-  getInstructionsBlackJack.
+  getInstructionsBlackJack,
+  halt.
 
 
 getInstructionsArrowsGame :-

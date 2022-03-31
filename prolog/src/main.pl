@@ -68,7 +68,7 @@ getRanking(X, R1):-
 getGame(1) :-
   writeln('Setinha Pô!').
 getGame(2) :-
-  blackjack.init.
+  init.
 getGame(3) :-
   start.
 
@@ -81,9 +81,10 @@ option(5):- exitMensage.
 
 
  getCredits :-
- 
+  cls,
   writeln("Projeto da disciplina Paradigmas da Linguagem de Programação, período 2021.1."),
-  writeln("Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena.").
+  writeln("Desenvolvido por Anna Beatriz Lucena, Henrique Lemos, Mateus Ribeiro, Natália Salvino, Ricardo Sena."),
+  halt.
 
 
 exitMensage :-
@@ -124,12 +125,14 @@ exitMensage :-
   writeln("                                                                ▒▒        ").
 
 getInstructions :-
+  cls,
   writeln(" "),
   getInstructionsArrowsGame,
   writeln(" "),
   getInstructions777Slots,
   writeln(" "),
-  getInstructionsBlackJack.
+  getInstructionsBlackJack,
+  halt.
 
 
 getInstructionsArrowsGame :-

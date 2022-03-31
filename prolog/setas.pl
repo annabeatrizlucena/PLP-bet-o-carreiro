@@ -53,11 +53,12 @@ compareSequence :-
     read(Y),
     validateSequence(X,Y).
 
-getUserInput :-
+getUserInput(Time,X) :-
+    writeln("\nDigite sua resposta:\n"),
     current_input(I),
-    wait_for_input([I], [Input], 5),
+    wait_for_input([I], [Input], Time),
     read_string(Input, _, String),
-    writeln(String), halt.
+    X = String; X = "\nO seu tempo acabou :(".
 
 cls :- write('\33\[2J').
 
@@ -69,5 +70,5 @@ main :-
     initArrowsGame,
     read(Input),
     getOption(Input, X),
-    getUserInput.
+    getUserInput(5,X).
     

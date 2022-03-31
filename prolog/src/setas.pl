@@ -1,3 +1,5 @@
+:- module(setas, [start_arrow/0]).
+
 getEasyPhase(X) :-
     random_between(0,14, R),
     Lista = ["aaswd", "aaswd", "wdsaw", "swdaa", "dwsdd", "wswaa", "dsaws", "sswda", "sdaws", "ddasw", "awsdw", "sadws", "dawsw", "sawds", "awdsa", "wasda"],
@@ -67,7 +69,7 @@ getPhase(1,X) :- getEasyPhase(X).
 getPhase(2,X) :- getMiddlePhase(X).
 getPhase(3,X) :- getHardPhase(X).
 
-main :-
+start_arrow :-
     initArrowsGame,
     read(Input),
     getOption(Input, X),

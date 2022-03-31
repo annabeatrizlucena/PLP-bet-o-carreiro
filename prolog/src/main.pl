@@ -2,6 +2,7 @@
 :- use_module(util).
 :- use_module(blackjack).
 :- use_module(setesetesete).
+:- use_module(setas).
 
 cls :- write("\33[2J").
 
@@ -66,7 +67,7 @@ getRanking(X, R1):-
   halt.
 
 getGame(1) :-
-  writeln('Setinha Pô!').
+  start_arrow.
 getGame(2) :-
   init.
 getGame(3) :-

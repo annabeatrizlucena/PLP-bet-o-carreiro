@@ -16,6 +16,7 @@ getHardPhase(X) :-
 
 validateSequence(A,A).
 
+printCharacter([]).
 printCharacter([X|L]) :-
     writeln(X),
     sleep(2),

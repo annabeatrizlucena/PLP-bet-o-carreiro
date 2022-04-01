@@ -1,5 +1,6 @@
 :- use_module(database).
 :- use_module(util).
+:- use_module(setas).
 :- use_module(blackjack).
 :- use_module(setesetesete).
 
@@ -66,7 +67,7 @@ getRanking(X, R1):-
   halt.
 
 getGame(1) :-
-  writeln('Setinha Pô!').
+  initArrows.
 getGame(2) :-
   init.
 getGame(3) :-

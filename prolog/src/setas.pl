@@ -70,7 +70,6 @@ compareSequence(Input, X) :-
     getOption(Input,X),
     writeln('Digite sua resposta:\n'),
     read(Y),
-    %(X == Y -> T = 'Resposta correta!'; T = 'Resposta incorreta!').
     (X == Y -> incressBetcoin(10), writeln('Resposta Correta!!'); writeln('Resposta Incorreta!')).
 
 cls :- write('\33\[2J').

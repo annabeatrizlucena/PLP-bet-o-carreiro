@@ -48,7 +48,20 @@ save_player :-
 
 init:- 
     cls, write('Bem vindo a mesa de apostas do BlackJack! \n'), 
+    clearResult(player),
+    clearResult(dealer),
+    clearCarts(player),
+    clearCarts(dealer), 
     playerTurn.
+
+
+clearCarts(P):-
+    retract(cardNumber(P,_)),
+    assert(cardNumber(P,0)).
+
+clearResult(P):-
+    retract(points(P,_)),
+    assert(points(P,0)).
 
 playerTurn:- 
     write('\nDeseja Continuar Retirando Cartas? \n1. Sim\n2. Não \n\n'), 
@@ -91,7 +104,6 @@ addResult(P, V):-
 
 incressBetcoin(WinScore):- 
     betcoin(Old),
-    write('\n\nVocê ganhou '), write(Old), write(' pontos!\n'),
     retract(betcoin(_)),
     New is Old + WinScore,
     assert(betcoin(New)).

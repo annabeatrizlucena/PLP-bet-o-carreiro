@@ -59,6 +59,7 @@ getGameList :-
   cls.
 
 getRanking(X, R1):-
+  cls,
   get_scores(X, R1),
   writeln("Ranking dos Jogadores:"),
   writeln(" "),

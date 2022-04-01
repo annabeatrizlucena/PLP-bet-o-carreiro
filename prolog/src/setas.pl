@@ -50,6 +50,7 @@ getOption(3,X) :-
     printCharacter(List).
 
 getOption(4,X) :-
+    X = 1,
     halt.
 
 compareSequence(Input, X, T) :-

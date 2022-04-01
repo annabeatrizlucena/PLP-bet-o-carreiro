@@ -1,5 +1,6 @@
 :- use_module(database).
 :- use_module(util).
+:- use_module(setas).
 :- use_module(blackjack).
 :- use_module(setesetesete).
 :- use_module(setas).
@@ -67,7 +68,8 @@ getRanking(X, R1):-
   halt.
 
 getGame(1) :-
-  start_arrow.
+  initArrows.
+
 getGame(2) :-
   init.
 getGame(3) :-

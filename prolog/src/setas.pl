@@ -1,18 +1,19 @@
-:- module(setas, [start_arrow/0]).
+:- module(setas, [initArrows/0]).
+
 
 getEasyPhase(X) :-
     random_between(0,14, R),
-    Lista = ["aaswd", "aaswd", "wdsaw", "swdaa", "dwsdd", "wswaa", "dsaws", "sswda", "sdaws", "ddasw", "awsdw", "sadws", "dawsw", "sawds", "awdsa", "wasda"],
+    Lista = ['aaswd', 'aaswd', 'wdsaw', 'swdaa', 'dwsdd', 'wswaa', 'dsaws', 'sswda', 'sdaws', 'ddasw', 'awsdw', 'sadws', 'dawsw', 'sawds', 'awdsa', 'wasda'],
     nth0(R, Lista, X).
 
 getMiddlePhase(X) :-
     random_between(0,14, R),
-    Lista = ["wdsaawd", "awdswsd", "wsadwsd", "awsdwsd", "awaaaws", "dsadwsw", "swdsadw", "dswaswd", "wsaswsw", "awswwwd", "dawdwsd", "wsdawsw", "awaawwd", "ssadwsw", "asdwswa"],
+    Lista = ['wdsaawd', 'awdswsd', 'wsadwsd', 'awsdwsd', 'awaaaws', 'dsadwsw', 'swdsadw', 'dswaswd', 'wsaswsw', 'awswwwd', 'dawdwsd', 'wsdawsw', 'awaawwd', 'ssadwsw', 'asdwswa'],
     nth0(R, Lista, X).
     
 getHardPhase(X) :-
     random_between(0,14, R),
-    Lista = ["asswswsdsa", "sdwasdwsas", "wswsswddsa", "daswswsdsa", "sdaswsawsd", "swddswssaw", "dwsawsawds", "asdaswssws", "sawdwsadsd", "sawdswswsd", "wasdwsswds", "wswsdwswsw", "asddsaswas", "dsdsswasds", "sawsdwsasd"],
+    Lista = ['asswswsdsa', 'sdwasdwsas', 'wswsswddsa', 'daswswsdsa', 'sdaswsawsd', 'swddswssaw', 'dwsawsawds', 'asdaswssws', 'sawdwsadsd', 'sawdswswsd', 'wasdwsswds', 'wswsdwswsw', 'asddsaswas', 'dsdsswasds', 'sawsdwsasd'],
     nth0(R, Lista, X).
 
 
@@ -25,13 +26,13 @@ printCharacter([X|L]) :-
     printCharacter(L).
 
 initArrowsGame :-
-  writeln("Bem Vindo ao Jogo das Setinhas ⬅️⬆️➡️"),
-  writeln(" "),
-  writeln("Escolha sua fase:"),
-  writeln("[1] Fácil"),
-  writeln("[2] Médio"),
-  writeln("[3] Difícil"),
-  writeln("[4] Sair").
+  writeln('Bem Vindo ao Jogo das Setinhas ⬅️⬆️➡️'),
+  writeln(' '),
+  writeln('Escolha sua fase:'),
+  writeln('[1] Fácil'),
+  writeln('[2] Médio'),
+  writeln('[3] Difícil'),
+  writeln('[4] Sair').
 
 getOption(1,X) :-
     getEasyPhase(X),
@@ -51,17 +52,13 @@ getOption(3,X) :-
 getOption(4,X) :-
     halt.
 
-compareSequence :-
-    getOption(1,X),
+compareSequence(Input, X, T) :-
+    getOption(Input,X),
+    writeln('Digite sua resposta:\n'),
     read(Y),
-    validateSequence(X,Y).
+    (X == Y -> T = 'Resposta correta!'; T = 'Resposta incorreta!').
 
-getUserInput(Time,Y) :-
-    writeln("\nDigite sua resposta:\n"),
-    current_input(I),
-    wait_for_input([I], [Input], Time),
-    read_string(Input, _, String),
-    Y = String; Y = "\nO seu tempo acabou :(".
+
 
 cls :- write('\33\[2J').
 
@@ -69,9 +66,9 @@ getPhase(1,X) :- getEasyPhase(X).
 getPhase(2,X) :- getMiddlePhase(X).
 getPhase(3,X) :- getHardPhase(X).
 
-start_arrow :-
+initArrows :-
     initArrowsGame,
     read(Input),
-    getOption(Input, X),
-    getUserInput(5,Y).
-    
+    compareSequence(Input,X, T),
+    writeln(T), initArrows.
+

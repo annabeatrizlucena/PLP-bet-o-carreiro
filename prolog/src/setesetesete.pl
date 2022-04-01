@@ -1,8 +1,9 @@
-:- module(setesetesete, [start/0]).
+:- module(setesetesete, [start_slots/0]).
 
 :- use_module(database).
 
-start:-
+start_slots:-
+    cls,
     writeln('Bem Vindo ao Jogo 707070! Se Perder 70 de Novo!'),
     writeln('        Você Começa Com $50 BetCoins!'),
     writeln('-=-=-=-=-=-=-=-=-=-X><X-=-=-=-=-=-=-=-=-=-=-=-=-'),

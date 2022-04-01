@@ -3,6 +3,7 @@
 :- use_module(setas).
 :- use_module(blackjack).
 :- use_module(setesetesete).
+:- use_module(setas).
 
 cls :- write("\33[2J").
 
@@ -68,10 +69,11 @@ getRanking(X, R1):-
 
 getGame(1) :-
   initArrows.
+
 getGame(2) :-
   init.
 getGame(3) :-
-  start.
+  start_slots.
 
 
 option(1):- getGameList.

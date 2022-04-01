@@ -1,3 +1,5 @@
+:- use_module(timeout).
+
 getEasyPhase(X) :-
     random_between(0,14, R),
     Lista = ["aaswd", "aaswd", "wdsaw", "swdaa", "dwsdd", "wswaa", "dsaws", "sswda", "sdaws", "ddasw", "awsdw", "sadws", "dawsw", "sawds", "awdsa", "wasda"],
@@ -49,10 +51,11 @@ getOption(3,X) :-
 getOption(4,X) :-
     halt.
 
-compareSequence :-
-    getOption(1,X),
+compareSequence(Input, X) :-
+    getOption(Input,X),
+    writeln("Digite sua resposta:\n"),
     read(Y),
-    validateSequence(X,Y).
+    (validateSequence(X,Y), writeln("Resposta correta!"); writeln("Resposta incorreta!")).
 
 getUserInput(Time,Y) :-
     writeln("\nDigite sua resposta:\n"),
@@ -68,8 +71,10 @@ getPhase(2,X) :- getMiddlePhase(X).
 getPhase(3,X) :- getHardPhase(X).
 
 main :-
-    initArrowsGame,
-    read(Input),
-    getOption(Input, X),
-    getUserInput(5,Y).
+    test(Input),
+    compareSequence(Input,X).
+
+
+
+
     

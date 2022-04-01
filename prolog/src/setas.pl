@@ -66,8 +66,9 @@ save_player :-
     add_player(N, B),
     halt.
 
-compareSequence(Input, X) :-
+compareSequence(Input) :-
     getOption(Input,X),
+    cls,
     writeln('Digite sua resposta:\n'),
     read(Y),
     (X == Y -> incressBetcoin(10), writeln('Resposta Correta!!'); writeln('Resposta Incorreta!')).
@@ -81,12 +82,11 @@ getPhase(3,X) :- getHardPhase(X).
 initArrows :-
     initArrowsGame,
     read(Input),
-    compareSequence(Input,X),
+    compareSequence(Input),
     initArrows.
 
 incressBetcoin(WinScore):- 
     betcoin(Old),
-    write('\n\nVocê ganhou '), write(Old), write(' pontos!\n'),
     retract(betcoin(_)),
     New is Old + WinScore,
     assert(betcoin(New)).

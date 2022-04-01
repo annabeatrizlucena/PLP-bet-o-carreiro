@@ -125,7 +125,7 @@ exitMensage :-
   writeln("                                                            ▒▒░░░░▒▒▒▒▒▒  "),
   writeln("                                                              ▒▒░░▒▒      "),
   writeln("                                                              ▒▒░░▒▒      "),
-  writeln("                                                                ▒▒        ").
+  writeln("                                                                ▒▒        "), halt.
 
 getInstructions :-
   cls,

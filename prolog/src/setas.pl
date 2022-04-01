@@ -1,5 +1,9 @@
 :- module(setas, [initArrows/0]).
+:- use_module(database).
 
+:- dynamic betcoin/1.
+
+betcoin(0).
 
 getEasyPhase(X) :-
     random_between(0,14, R),
@@ -50,16 +54,23 @@ getOption(3,X) :-
     printCharacter(List).
 
 getOption(4,X) :-
+    save_player,
     X = 1,
     halt.
 
-compareSequence(Input, X, T) :-
+save_player :-
+    betcoin(B),
+    writeln('Vamos Registar Seu Nome Para Salvar Suas Betcoins no Ranking 😊'),
+    read(N),
+    write('Seu score final foi de '), write(B), writeln(' Betcoins!'),
+    add_player(N, B),
+    halt.
+
+compareSequence(Input, X) :-
     getOption(Input,X),
     writeln('Digite sua resposta:\n'),
     read(Y),
-    (X == Y -> T = 'Resposta correta!'; T = 'Resposta incorreta!').
-
-
+    (X == Y -> incressBetcoin(10), writeln('Resposta Correta!!'); writeln('Resposta Incorreta!')).
 
 cls :- write('\33\[2J').
 
@@ -70,6 +81,12 @@ getPhase(3,X) :- getHardPhase(X).
 initArrows :-
     initArrowsGame,
     read(Input),
-    compareSequence(Input,X, T),
-    writeln(T), initArrows.
+    compareSequence(Input,X),
+    initArrows.
 
+incressBetcoin(WinScore):- 
+    betcoin(Old),
+    write('\n\nVocê ganhou '), write(Old), write(' pontos!\n'),
+    retract(betcoin(_)),
+    New is Old + WinScore,
+    assert(betcoin(New)).

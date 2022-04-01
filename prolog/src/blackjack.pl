@@ -1,8 +1,11 @@
 :- module(blackjack, [init/0]).
+:- use_module(database).
 
 :- dynamic points/2.
 :- dynamic previousCard/3.
 :- dynamic cardNumber/2.
+:- dynamic betCoins/2.
+
 
 card('Ás', X):- X = 1.
 card('Dois', X):- X = 2.
@@ -26,13 +29,14 @@ limit(17).
 
 points(player, 0).
 points(dealer, 0).
+betCoins(player,'0').
 
-end1:- write('A banca ganhou!').
-end2:- write('A banca atingiu mais de 21! Você ganhou!').
-end3:- write('Sua pontuação chegou mais próximo de 21, Você ganhou!').
-end4:- write('A banca chegou mais próximo de 21, A banca ganhou!').
-end5:- write('Empate!').
-
+end1(P):- write('A banca ganhou!\n'),askPlay(P).
+end2(P):- write('A banca atingiu mais de 21! Você ganhou!\n'),askPlay(P).
+end3(P):- write('Sua pontuação chegou mais próximo de 21, Você ganhou!\n'),askPlay(P).
+end4(P):- write('A banca chegou mais próximo de 21, A banca ganhou!\n'),askPlay(P).
+end5(P):- write('Empate!\n'),askPlay(P).
+end6:- write('Obrigado por jogar conosco!').
 cls :- write('\33[2J').
 
 
@@ -95,10 +99,10 @@ showRecursiveCard(P, Num) :-
     showRecursiveCard(P, NewNum).
 
 possibleEnd(P, X):- 
-    victory(V), X > V, P == player, end1, write('\n'), halt;
+    victory(V), X > V, P == player,addBetCoins(P,0), end1(P);
     victory(V), X = V, P == player, write('21! Vez da banca.'), dealerTurn, write('\n'), halt;
     victory(V), X < V, P == player, playerTurn, write('\n'), halt;
-    victory(V), X > V, P == dealer, end2, write('\n'), halt;
+    victory(V), X > V, P == dealer,addBetCoins(P,1), end2(P);
     victory(V), limit(L), X >= L, X =< V, P == dealer, end, write('\n'), halt;
     limit(L), X < L, P == dealer, getCard(P), write('\n'), halt.
 
@@ -107,9 +111,35 @@ end:-
     points(dealer, Y),
     cls, write('\nResultado: \n\nVocê: '), write(X), 
     write('\nBanca: '), write(Y), write('\n\n'),
-    finalCalculation(X, Y).
+    finalCalculation(player,X, Y).
 
-finalCalculation(X, Y):- 
-    X > Y, end3;
-    X < Y, end4;
-    X = Y, end5.
+askPlay(P):- 
+    write("Deseja jogar novamente? Sim [1] Não [0]"),
+    read(Input),
+    playAgain(Input,P).
+
+registerScore(P):-
+    betCoins(P,S),
+    writeln('Vamos Registar Seu Nome Para Salvar Suas Betcoins no Ranking 😊'),
+    read(N),
+    write('Seu score final foi de '), write(S), writeln(' Betcoins!\n'),
+    add_player(N, S).
+
+playAgain(X,P):-
+    (X == 1 -> (init); registerScore(P)).
+
+finalCalculation(P,X, Y):- 
+    X > Y, addBetCoins(P,1),end3(P);
+    X < Y,addBetCoins(P,0), end4(P);
+    X = Y, end5(P).
+
+addBetCoins(P, W):- 
+    betCoins(P, Old),
+    calcBetCoins(Old, W,New),
+    retract(betCoins(P, _)),
+    assert(betCoins(P, New)).  
+
+calcBetCoins(Old,W,New):-
+    atom_number(Old, Old1),
+    W = 1, New = Old1 + 10;
+    W = 0, New = Old1 - 12.

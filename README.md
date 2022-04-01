@@ -25,3 +25,7 @@ Antes de contribuir, clique *[aqui](CODE_OF_CONDUCT.md)* para acessar nosso cód
 ## Demo - Funcional
 
 [Demo](https://www.youtube.com/watch?v=agvVuu8yfa8).
+
+## Demo - Lógico
+
+[Demo](https://www.youtube.com/watch?v=bx-HjEJFWrI).

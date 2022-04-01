@@ -22,10 +22,8 @@ Quer sugerir algo novo ou alguma mudança? Leia nosso *[Guia de Contribuição](
 
 Antes de contribuir, clique *[aqui](CODE_OF_CONDUCT.md)* para acessar nosso código de conduta.
 
-## Demo - Funcional
+## Demo
 
-[Demo](https://www.youtube.com/watch?v=agvVuu8yfa8).
+- [Funcional](https://www.youtube.com/watch?v=agvVuu8yfa8).
 
-## Demo - Lógico
-
-[Demo](https://www.youtube.com/watch?v=bx-HjEJFWrI).
+- [Lógico](https://www.youtube.com/watch?v=bx-HjEJFWrI).

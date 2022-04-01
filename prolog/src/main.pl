@@ -71,7 +71,7 @@ getGame(1) :-
 getGame(2) :-
   init.
 getGame(3) :-
-  start.
+  start_slots.
 
 
 option(1):- getGameList.

@@ -3,6 +3,7 @@
 :- use_module(database).
 
 start_slots:-
+    cls,
     writeln('Bem Vindo ao Jogo 707070! Se Perder 70 de Novo!'),
     writeln('        Você Começa Com $50 BetCoins!'),
     writeln('-=-=-=-=-=-=-=-=-=-X><X-=-=-=-=-=-=-=-=-=-=-=-=-'),

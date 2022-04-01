@@ -1,8 +1,10 @@
 :- module(blackjack, [init/0]).
+:- use_module(database).
 
 :- dynamic points/2.
 :- dynamic previousCard/3.
 :- dynamic cardNumber/2.
+:- dynamic betcoin/1.
 
 card('Ás', X):- X = 1.
 card('Dois', X):- X = 2.
@@ -26,15 +28,23 @@ limit(17).
 
 points(player, 0).
 points(dealer, 0).
+betcoin(0).
 
-end1:- write('A banca ganhou!').
-end2:- write('A banca atingiu mais de 21! Você ganhou!').
-end3:- write('Sua pontuação chegou mais próximo de 21, Você ganhou!').
-end4:- write('A banca chegou mais próximo de 21, A banca ganhou!').
-end5:- write('Empate!').
-
+end1:- write('A banca ganhou!'), incressBetcoin(-12), askPlay.
+end2:- write('A banca atingiu mais de 21! Você ganhou!'), incressBetcoin(10), askPlay.
+end3:- write('Sua pontuação chegou mais próximo de 21, Você ganhou!'), incressBetcoin(10), askPlay.
+end4:- write('A banca chegou mais próximo de 21, A banca ganhou!'), incressBetcoin(-12), askPlay.
+end5:- write('Empate!'), askPlay.
+end6:- write('Obrigado por jogar conosco!'), save_player.
 cls :- write('\33[2J').
 
+save_player :-
+    betcoin(B),
+    writeln('Vamos Registar Seu Nome Para Salvar Suas Betcoins no Ranking 😊'),
+    read(N),
+    write('Seu score final foi de '), write(B), writeln(' Betcoins!'),
+    add_player(N, B),
+    halt.
 
 init:- 
     cls, write('Bem vindo a mesa de apostas do BlackJack! \n'), 
@@ -79,6 +89,13 @@ addResult(P, V):-
     write('Total: '), write(X), write('\n'),
     possibleEnd(P, X).
 
+incressBetcoin(WinScore):- 
+    betcoin(Old),
+    write('\n\nVocê ganhou '), write(Old), write(' pontos!\n'),
+    retract(betcoin(_)),
+    New is Old + WinScore,
+    assert(betcoin(New)).
+
 chooseAceValue(V, Old, New):- 
     V \== 1, New = V;
     Old >= 11, V == 1, New = 1;
@@ -95,10 +112,10 @@ showRecursiveCard(P, Num) :-
     showRecursiveCard(P, NewNum).
 
 possibleEnd(P, X):- 
-    victory(V), X > V, P == player, end1, write('\n'), halt;
+    victory(V), X > V, P == player, end1;
     victory(V), X = V, P == player, write('21! Vez da banca.'), dealerTurn, write('\n'), halt;
     victory(V), X < V, P == player, playerTurn, write('\n'), halt;
-    victory(V), X > V, P == dealer, end2, write('\n'), halt;
+    victory(V), X > V, P == dealer, end2;
     victory(V), limit(L), X >= L, X =< V, P == dealer, end, write('\n'), halt;
     limit(L), X < L, P == dealer, getCard(P), write('\n'), halt.
 
@@ -108,6 +125,15 @@ end:-
     cls, write('\nResultado: \n\nVocê: '), write(X), 
     write('\nBanca: '), write(Y), write('\n\n'),
     finalCalculation(X, Y).
+
+askPlay:- 
+    write("Deseja jogar novamente? Sim [1] Não [0]"),
+    read(Input),
+    playAgain(Input).
+
+playAgain(X):-
+    (X == 1), init;
+    (X == 0), end6.
 
 finalCalculation(X, Y):- 
     X > Y, end3;
